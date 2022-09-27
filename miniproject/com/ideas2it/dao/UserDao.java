@@ -67,6 +67,15 @@ public interface UserDao {
      * @return loginCredentials logincredentials of the user
      */
     public Map<String, String> getLoginCredentials();
+
+    /**
+     * Update the loginCredentials of the user
+     * 
+     * @param oldEmail old email in loginCredentials
+     * @parma newEmail updated email of the user
+     * @retun boolean  true after the update
+     */
+    public boolean updateLoginCredentials(String oldEmail, String newEmail);
     
     /**
      * Get the username by the userId

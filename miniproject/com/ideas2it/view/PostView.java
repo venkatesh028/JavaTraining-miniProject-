@@ -59,18 +59,14 @@ public class PostView {
      * Add comment to the post be getting the details about that post
      */
     public void addComment() {
-        scanner.nextLine();
-        System.out.print("Enter the UserName of the post : ");
-        String userName = scanner.nextLine();
         System.out.print("Enter the post number : ");
-        int postNumber = scanner.nextInt();   
-        scanner.nextLine();
+        String postId = scanner.nextLine();   
         System.out.print("Enter your comment : ");
         String comment = scanner.nextLine();
 
-       /* if (postController.addComment(userName, comment, postNumber)) {
+        if (postController.addComment(postId, comment)) {
             System.out.println("Comment added successfully ");
-        } */      
+        }      
     }
     
     /**
@@ -114,7 +110,7 @@ public class PostView {
                 break;
 
             case Constants.COMMENT:
-                //addComment();
+                addComment();
                 break;
 
             case Constants.EXIT_POSTPAGE:

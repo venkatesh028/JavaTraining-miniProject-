@@ -7,13 +7,12 @@ package com.ideas2it.constant;
  * @author Venkaetsh Tm
  */
 public class Constants {
-    public final static String emailFormat = "^[a-zA-Z0-9][a-zA-Z0-9.]{3,30}@[a-zA-Z0-9]+\\.[a-zA-Z0-9.]{3,}$";
-
-    public final static String passwordFormat = "^(?=.*[0-9])"
+    public final static String EMAIL_FORMAT = "^[a-zA-Z0-9][a-zA-Z0-9.]{3,30}@[a-zA-Z0-9]+\\.[a-zA-Z0-9.]{3,}$";
+    public final static String PASSWORD_FORMAT = "^(?=.*[0-9])"
                                                  + "(?=.*[a-z])(?=.*[A-Z])"
                                                  + "(?=.*[@#$%^&+=])" 
                                                  + "(?=\\S+$).{8,20}$";
-    
+
     public final static int CREATE_ACCOUNT = 1;
     public final static int LOGIN = 2;
     public final static int EXIT_HOMEPAGE = 3;

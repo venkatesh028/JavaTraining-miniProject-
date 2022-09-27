@@ -133,9 +133,27 @@ public class UserService {
     public User showPersonalInfo(String userId) {
         return userDao.getUserById(userId);
     }
-   
+    
+    /**
+     * Update the personal information of the user
+     *
+     * @param  userId   Id of the user
+     * @param  user     updated personal information of the user
+     * @return booelan  true after the updating
+     */ 
     public boolean updateUser(String userId, User user) { 
         return userDao.updateUser(userId, user);
+    }
+    
+    /**
+     * Update the loginCredentials of the user
+     * 
+     * @param oldEmail old email in loginCredentials
+     * @parma newEmail updated email of the user
+     * @retun boolean  true after the update
+     */
+    public boolean updateLoginCredentials(String oldEmail, String newEmail) {
+        return userDao.updateLoginCredentials(oldEmail, newEmail);        
     }
   
 }

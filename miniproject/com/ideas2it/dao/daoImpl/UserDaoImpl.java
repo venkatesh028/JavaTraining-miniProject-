@@ -104,4 +104,15 @@ public class UserDaoImpl implements UserDao {
         user = users.get(userId);
         return user.getProfile().getUserName();
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override   
+    public boolean updateLoginCredentials (String oldEmail, String newEmail) {
+        String userId;
+        userId = loginCredentials.remove(oldEmail);
+        loginCredentials.put(newEmail, userId);
+        return true;        
+    }
 }

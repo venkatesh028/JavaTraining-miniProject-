@@ -17,7 +17,7 @@ public class ValidationUtil {
      * @return boolean true if the given data matches the format else false
      */
     public boolean isValidEmail(String email) {
-        return email.matches(Constants.emailFormat);
+        return email.matches(Constants.EMAIL_FORMAT);
     }
 
     /** 
@@ -27,6 +27,6 @@ public class ValidationUtil {
      * @return boolean  true if the given data matches the format else false
      */
     public boolean isValidPassword(String password) {
-        return password.matches(Constants.passwordFormat);
+        return password.matches(Constants.PASSWORD_FORMAT);
     }
 }

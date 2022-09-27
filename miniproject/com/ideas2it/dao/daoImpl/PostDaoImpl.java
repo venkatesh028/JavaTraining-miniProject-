@@ -31,31 +31,40 @@ public class PostDaoImpl implements PostDao {
         }
         return postDaoImpl;
     }
-    
+
     /**
-     * Add the post 
-     * 
-     * @param  postedBy name of the user who posted the post
-     * @parma  quotes   post of the user 
-     * @return boolean  true after adding the post
-     */   
+     * {@inheritDoc}
+     */
+    @Override  
     public boolean addPost(Post post) {
         userPost.add(post);
         return true;   
     }
-    
+
     /**
-     * Get all the post in the list
-     * 
-     * @return userPost list of post uploaded
-     */
+     * {@inheritDoc}
+     */    
+    @Override
     public List<Post> getUserPost() {
         return userPost;
     }
-     
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override 
     public boolean updatePost(List<Post> userPost) {
         this.userPost = userPost;
         return true;
-    }   
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean deletePost(int index) {
+        userPost.remove(index);
+        return true;
+    } 
     
 }

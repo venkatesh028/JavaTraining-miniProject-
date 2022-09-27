@@ -46,9 +46,18 @@ public class PostService {
         return postDao.addPost(post);  
     }
     
+    /**
+     * Add like to the post based on id of the post
+     * 
+     * @param  likedUserName userName of the user who like 
+     * @param  postId        Id of the post
+     * @return boolean       true after adding the like 
+     */ 
     public boolean addLike(String likedUserName, String postId) {
         userPost = postDao.getUserPost();
+
         for (Post post : userPost) {
+
             if (post.getPostId().equals(postId)) {
                 if (post.getLikedUsers().contains(likedUserName)) {
                     post.setUnlike();
@@ -64,6 +73,26 @@ public class PostService {
     }
     
     /**
+     * Add comment to the particular post based on the postId
+     * 
+     * @param  postId  id of the post 
+     * @param  comment comment entered by the user
+     * @return boolean true or false based on the result
+     */
+    public boolean addComment(String postId, String comment) {
+        userPost = postDao.getUserPost();
+
+        for (Post post : userPost) {
+
+            if (post.getPostId().equals(postId)) {
+                post.setComment(comment);
+                break;
+            }
+        }
+        return postDao.updatePost(userPost);       
+    }
+    
+    /**
      * Get the post uploaded by the user
      *
      * @return post list of post
@@ -71,5 +100,45 @@ public class PostService {
     public List<Post> getUserPost() {
         return postDao.getUserPost();
     }
+    
+    /**
+     * Gets the post based on there userName 
+     * 
+     * @param  userName       userName of the user
+     * @return postByUserName post of the particular user based on username
+     */
+    public String getPostByUserName(String userName) {
+        userPost = getUserPost();
+        StringBuilder postByUserName = new StringBuilder();
+ 
+        for (int index = 0; index < userPost.size(); index++) {
+            post = userPost.get(0);
+            if (post.getPostedBy().equals(userName)) {
+                postByUserName.append(post);        
+            }
+        }
+        return postByUserName.toString();
+    }
+    
+    /**
+     * Delete the particular post of the user
+     * Based on the postId
+     * 
+     * @param  postId  Id of the post
+     * @return result  true or false 
+     */
+    public boolean deletePost(String postId) { 
+        userPost = getUserPost();
+        boolean result = false;
+        for (int index = 0; index < userPost.size(); index++) {
+            post = userPost.get(0);
+            if (post.getPostId().equals(postId)) {
+                result = postDao.deletePost(index);
+                break;
+            }
+        }
+        return result;
+    }
+    
 
 }

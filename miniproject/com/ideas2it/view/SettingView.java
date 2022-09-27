@@ -75,9 +75,25 @@ public class SettingView {
                 break;
 
             case Constants.UPDATE_EMAIL:
-                System.out.print("Enter Email : ");
-                String email = scanner.next();
-                user.setEmail(email);
+                boolean emailValid = false;
+                String email;
+
+                while (!emailValid) {
+                    System.out.print("Enter your emailId : ");
+                    email = scanner.next();
+
+                    if (userController.isValidEmail(email)) {
+                        if (!userController.isEmailExist(email)) {
+                            userController.updateLoginCredentials(user.getEmail(), email);
+                            user.setEmail(email);
+                            emailValid = true;
+                        } else {
+                            System.out.println("Email Already exist");
+                        }                
+                    } else {
+                        System.out.println("Invalid email format");     
+                    }  
+                }
                 break;
 
             case Constants.UPDATE_GENDER:

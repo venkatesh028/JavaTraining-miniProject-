@@ -3,6 +3,7 @@ package com.ideas2it.view;
 import java.util.Scanner;
 
 import com.ideas2it.controller.ProfileController;
+import com.ideas2it.controller.PostController;
 import com.ideas2it.controller.UserController;
 import com.ideas2it.constant.Constants;
 
@@ -16,11 +17,13 @@ import com.ideas2it.constant.Constants;
 public class ProfileView {
 
     ProfileController profileController;
+    PostController postController;
     UserController userController;
     Scanner scanner;
      
     public ProfileView() {
         this.profileController = new ProfileController();
+        this.postController = new PostController();
         this.userController = new UserController();
         this.scanner = new Scanner(System.in);
     }
@@ -44,12 +47,23 @@ public class ProfileView {
         while (updatePage) {
             System.out.print(updateMessage);
             selectedUpdate = scanner.nextInt();         
-
+      
             switch (selectedUpdate) {            
             case Constants.UPDATE_USERNAME:
-                System.out.println("Enter your UserName :");
-                String newUserName = scanner.next();
-                profileController.updateUserName(userId, newUserName);                
+                String newUserName;
+                boolean userNameValid = false;
+
+                while (!userNameValid) {
+                    System.out.print("Enter the UserName : ");
+                    newUserName = scanner.next();
+                    
+                    if (!userController.isUserNameExist(newUserName)) {
+                        profileController.updateUserName(userId, newUserName);
+                        userNameValid = true;
+                    } else {  
+                        System.out.println("UserName is already exist Enter a new one");
+                    }
+                }                
                 break;
             
             case Constants.UPDATE_BIO:
@@ -81,6 +95,23 @@ public class ProfileView {
     private void showProfile(String userId) {
         System.out.println(profileController.showProfile(userId));
     }
+    
+    private void showPostByUserName(String userId) {
+        String userName = profileController.getUserName(userId);
+        System.out.println(postController.getPostByUserName(userName)); 
+    }
+    
+    private void deletePost() {
+        String postId;
+        System.out.print("Enter the PostId : ");
+        postId = scanner.nextLine();
+
+        if (postController.deletePost(postId)) {
+            System.out.println("Post Deleted ..");
+        } else {
+            System.out.println("Something went wrong..");
+        }
+    }
    
 
     /**
@@ -100,15 +131,18 @@ public class ProfileView {
 
         while (profilePage) {   
             showProfile(userId); 
+            showPostByUserName(userId);
             System.out.println(profileMessage);
             selectedOption = scanner.nextInt();
-            
+            scanner.skip("\r\n");
+
             switch (selectedOption) { 
             case Constants.UPDATE_PROFILE:
                 updateProfile(userId);
                 break;
 
             case Constants.DELETE_POST:
+                deletePost();
                 break;
            
             case Constants.EXIT_PROFILEPAGE:

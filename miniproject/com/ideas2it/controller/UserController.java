@@ -137,5 +137,16 @@ public class UserController {
     public boolean updateUser(String userId, User user) {
         return userService.updateUser(userId, user);
     }
+
+    /** 
+     * Update the loginCredentials of the user 
+     * 
+     * @param  oldEmail old email of the user 
+     * @param  newEmail new email of the user
+     * @return boolean  true after the update
+     */
+    public boolean updateLoginCredentials(String oldEmail, String newEmail) {
+        return userService.updateLoginCredentials(oldEmail, newEmail);
+    }
   
 }
