@@ -25,15 +25,12 @@ public class Transport {
                .append(" To choose the bike")
                .append("\nEnter ").append(EXIT)
                .append(" TO exit ");
-
+     try {
         while (isRunning) {
             System.out.print(message);
 
-            try {
+            
             	selectedOption = scanner.nextInt();
-            } catch (InputMismatchException e) {
-                Transport.main(null);
-            }
 
             switch (selectedOption) {
             case FLIGHT:
@@ -56,7 +53,12 @@ public class Transport {
                 System.out.println("Enter the given option");
                 break;
             }
-        }
+          }
+
+            } catch (InputMismatchException e) {
+                main(new String[1] );
+            }
+        
     }
 
 }
