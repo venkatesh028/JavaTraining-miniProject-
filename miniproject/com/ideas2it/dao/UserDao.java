@@ -19,7 +19,7 @@ public interface UserDao {
      * @param  user     details of the user
      * @return boolean  true after adding the user in map
      */
-    public boolean createAccount(User user);
+    public User create(User user);
 
     /** 
      * Delete the account
@@ -27,7 +27,7 @@ public interface UserDao {
      * @param  userId  userId of the user
      * @return boolean true after deleting the account
      */
-    public boolean deleteAccount(String userId);
+    public boolean delete(String userId);
 
     /** 
      * Get the all the users
@@ -42,7 +42,7 @@ public interface UserDao {
      * @param  userId userId of the user
      * @return user   particular userdetails 
      */ 
-    public User getUserById(String userId);
+    public User getById(String userId);
     
     /**
      * Update the information of the user
@@ -51,7 +51,7 @@ public interface UserDao {
      * @param  user    updated information of the user
      * @return boolean true after updating the user
      */
-    public boolean updateUser(String userId, User user);
+    public User update(String userId, User user);
 
     /**
      * Get the profile of the particular user
@@ -75,7 +75,7 @@ public interface UserDao {
      * @parma newEmail updated email of the user
      * @retun boolean  true after the update
      */
-    public boolean updateLoginCredentials(String oldEmail, String newEmail);
+    public String updateLoginCredentials(String oldEmail, String newEmail);
     
     /**
      * Get the username by the userId

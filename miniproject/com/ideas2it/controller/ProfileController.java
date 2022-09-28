@@ -23,8 +23,8 @@ public class ProfileController {
      * @param  userId  userId of the user
      * @return Profile profile of the user
      */
-    public Profile showProfile(String userId) {
-        return profileService.showProfile(userId);
+    public Profile getProfile(String userId) {
+        return profileService.getProfile(userId);
     } 
 
     /**

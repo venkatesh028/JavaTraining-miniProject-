@@ -96,11 +96,14 @@ public class User {
     }
     
     public String toString() {
-        return"\nName    : "+ name
-                +"\nEmail : "+ email
-                +"\nGender: "+ gender
-                +"\nDOB   : "+ dateOfBirth
-                +"\nAge   : "+ age
-                +"\nPhNo  : "+ phoneNumber ;
+        StringBuilder userMessage = new StringBuilder();
+        userMessage.append("\nName    : ").append(name)
+                   .append("\nEmail   : ").append(email)
+                   .append("\nGender  : ").append(gender)
+                   .append("\nDOB     : ").append(dateOfBirth)
+                   .append("\nAge     : ").append(age)
+                   .append("\nPhNo    : ").append(phoneNumber);
+
+        return userMessage.toString();
      }
 }

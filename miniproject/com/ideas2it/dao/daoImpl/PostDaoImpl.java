@@ -36,9 +36,8 @@ public class PostDaoImpl implements PostDao {
      * {@inheritDoc}
      */
     @Override  
-    public boolean addPost(Post post) {
-        userPost.add(post);
-        return true;   
+    public boolean addPost(Post post) {        
+        return userPost.add(post);   
     }
 
     /**

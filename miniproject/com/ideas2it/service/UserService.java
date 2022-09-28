@@ -9,6 +9,7 @@ import java.util.UUID;
 import com.ideas2it.dao.UserDao;
 import com.ideas2it.dao.daoImpl.UserDaoImpl;
 import com.ideas2it.model.User;
+import com.ideas2it.model.Profile;
 
 /**
  * Perform the Update, delete, create operation for the user
@@ -17,16 +18,11 @@ import com.ideas2it.model.User;
  * @author Venkatesh TM
  */
 public class UserService {
-    private Map<String, User> users;
-    private Map<String, String> loginCredentials;
-    private Set<String> existingData;
-    private String userId;
+
     private UserDao userDao;
-    private User user;
-    
+
     public UserService() {
         this.userDao = UserDaoImpl.getInsatance();
-        this.existingData = new HashSet<>();
     }
 
     /**
@@ -36,12 +32,8 @@ public class UserService {
      * @return boolean true or false based on the result
      */ 
     public boolean isEmailExist(String email) {
-        loginCredentials = userDao.getLoginCredentials();
-
-        if (loginCredentials.containsKey(email)) {
-            return true;
-        } 
-        return false;
+        Map<String, String> loginCredentials = userDao.getLoginCredentials();
+        return loginCredentials.containsKey(email);
     }
     
     /**
@@ -50,10 +42,11 @@ public class UserService {
      * @param  user  details of the user
      * @return boolean true after adding the account 
      */
-    public boolean createAccount(User user) {
+    public User create(User user) {
+        String userId;
         userId = UUID.randomUUID().toString();
         user.setUserId(userId);
-        return userDao.createAccount(user);
+        return userDao.create(user);
     }
     
     /**
@@ -62,8 +55,8 @@ public class UserService {
      * @param  userId  userId of the user
      * @return boolean true after deleting the account
      */
-    public boolean deleteAccount(String userId) {
-        return userDao.deleteAccount(userId);
+    public boolean delete(String userId) {
+        return userDao.delete(userId);
     }
    
     /**
@@ -73,17 +66,14 @@ public class UserService {
      * @return boolean  true or false based on the result
      */
     public boolean isUserNameExist(String userName) {
-        existingData.clear();
-
+        Set<String> existingData =  new HashSet<>();
+        Map<String, User> users;
         users = userDao.getUsers();
+
         for (User user : users.values()) {
             existingData.add(user.getProfile().getUserName());        
         }
-        
-        if (existingData.contains(userName)) {
-            return true;
-        }
-        return false;
+        return existingData.contains(userName);
     }
     
     /**
@@ -93,14 +83,14 @@ public class UserService {
      * @return password password entered by the user
      */
     public boolean isValidCredentials(String email, String password) {
+        User user;
+        Map<String, User> users;
+        Map<String, String> loginCredentials;
         users = userDao.getUsers();
         loginCredentials = userDao.getLoginCredentials();
         user = users.get(loginCredentials.get(email));
 
-        if (user.getPassword().equals(password)) {
-            return true;
-        }
-        return false;
+        return user.getPassword().equals(password);
     }
     
     /**
@@ -110,6 +100,7 @@ public class UserService {
      * @return userId userId of the user
      */
     public String getUserId(String email) {
+        Map<String, String> loginCredentials;
         loginCredentials = userDao.getLoginCredentials();
         return loginCredentials.get(email);
     }
@@ -120,8 +111,8 @@ public class UserService {
      * @param  userId userid of the user
      * @return user   user 
      */ 
-    public User getUserById(String userId) {
-        return userDao.getUserById(userId); 
+    public User getById(String userId) {
+        return userDao.getById(userId); 
     }
 
     /**
@@ -131,7 +122,7 @@ public class UserService {
      * @return user   personal information of the user
      */    
     public User showPersonalInfo(String userId) {
-        return userDao.getUserById(userId);
+        return userDao.getById(userId);
     }
     
     /**
@@ -141,8 +132,8 @@ public class UserService {
      * @param  user     updated personal information of the user
      * @return booelan  true after the updating
      */ 
-    public boolean updateUser(String userId, User user) { 
-        return userDao.updateUser(userId, user);
+    public User update(String userId, User user) { 
+        return userDao.update(userId, user);
     }
     
     /**
@@ -152,8 +143,28 @@ public class UserService {
      * @parma newEmail updated email of the user
      * @retun boolean  true after the update
      */
-    public boolean updateLoginCredentials(String oldEmail, String newEmail) {
+    public String updateLoginCredentials(String oldEmail, String newEmail) {
         return userDao.updateLoginCredentials(oldEmail, newEmail);        
+    }
+
+    /**
+     * get the profile of the user 
+     *
+     * @param  userId  userId of the user
+     * @return profile profile details of the user
+     */
+    public Profile getProfile(String userId) {
+        return userDao.getProfile(userId);
+    }
+    
+    /**
+     * Get the username of the user
+     * 
+     * @param  userId   userId of the user
+     * @return userName username of the user 
+     */    
+    public String getUserName(String userId) {
+        return userDao.getUserName(userId);
     }
   
 }

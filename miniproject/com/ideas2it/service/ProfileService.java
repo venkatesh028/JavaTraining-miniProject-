@@ -1,8 +1,6 @@
 package com.ideas2it.service;
 
 import com.ideas2it.model.Profile;
-import com.ideas2it.dao.UserDao;
-import com.ideas2it.dao.daoImpl.UserDaoImpl;
 
 /** 
  * Perform the Create, update, delete taks for the user profile
@@ -11,21 +9,21 @@ import com.ideas2it.dao.daoImpl.UserDaoImpl;
  * @author  Venkatesh TM
  */
 public class ProfileService {
-    private UserDao userDao;
+    private UserService userService;
     private Profile profile;
 
     public ProfileService() {
-        this.userDao = UserDaoImpl.getInsatance();
+        this.userService = new UserService();
     }
     
     /**
-     * Shows the profile of the user 
+     * get the profile of the user 
      *
      * @param  userId  userId of the user
      * @return profile profile details of the user
      */
-    public Profile showProfile(String userId) {
-        return userDao.getProfile(userId);
+    public Profile getProfile(String userId) {
+        return userService.getProfile(userId);
     }
     
     /**
@@ -36,7 +34,7 @@ public class ProfileService {
      * @return boolean     true after the userName update
      */
     public boolean updateUserName(String userId, String newUserName) {
-        profile = userDao.getProfile(userId);
+        profile = userService.getProfile(userId);
         profile.setUserName(newUserName);
         return true;     
     }
@@ -49,7 +47,7 @@ public class ProfileService {
      * @return boolean true after update
      */
     public boolean updateBio(String userId, String bio) {
-        profile = userDao.getProfile(userId);
+        profile = userService.getProfile(userId);
         profile.setBio(bio);
         return true;    
     } 
@@ -61,7 +59,7 @@ public class ProfileService {
      * @return userName username of the user 
      */
     public String getUserName(String userId) {
-        return userDao.getUserName(userId);
+        return userService.getUserName(userId);
     }
     
 }

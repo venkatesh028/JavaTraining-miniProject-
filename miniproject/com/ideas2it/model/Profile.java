@@ -55,8 +55,11 @@ public class Profile {
     }
     
     public String toString() {
-        return "\nuserName  : "+ userName
-                +"\nBio     : "+ bio
-                +"\nFriends : "+ friendsCount;
+        StringBuilder profileMessage = new StringBuilder();
+        profileMessage.append("\nUserName : ").append(userName)
+                   .append("\nBio      : ").append(bio)
+                   .append("\nFriends  : ").append(friendsCount);
+
+        return profileMessage.toString();
     }
 }  

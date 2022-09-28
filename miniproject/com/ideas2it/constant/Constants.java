@@ -1,7 +1,7 @@
 package com.ideas2it.constant;
 
 /**
- * Contain the Format of the email and password 
+ * Contain the Format of the email, Password and contain all the constant values
  *
  * @version 1.0 
  * @author Venkaetsh Tm

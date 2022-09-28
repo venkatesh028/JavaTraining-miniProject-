@@ -26,7 +26,7 @@ public class SettingView {
      * @param userId userId of the user
      */
     private void deleteAccount(String userId) {
-        userController.deleteAccount(userId);
+        userController.delete(userId);
     }
     
     /**
@@ -47,7 +47,7 @@ public class SettingView {
         StringBuilder updateMessage = new StringBuilder();
         int selectedOption;
         boolean update = true;
-        User user = userController.getUserById(userId);
+        User user = userController.getById(userId);
 
         updateMessage.append("\nEnter ").append(Constants.UPDATE_NAME)
                      .append(" --> To update Name ").append("\nEnter ")
@@ -84,9 +84,12 @@ public class SettingView {
 
                     if (userController.isValidEmail(email)) {
                         if (!userController.isEmailExist(email)) {
-                            userController.updateLoginCredentials(user.getEmail(), email);
-                            user.setEmail(email);
-                            emailValid = true;
+                            if (userController.updateLoginCredentials(user.getEmail(), email) == null) {
+                                user.setEmail(email);
+                                emailValid = true;
+                            } else {
+                                System.out.print("Something went wrong not updated ");
+                            }
                         } else {
                             System.out.println("Email Already exist");
                         }                
@@ -115,12 +118,12 @@ public class SettingView {
                 break;
 
             case Constants.EXIT_UPDATE:
-                userController.updateUser(userId, user);
+                userController.update(userId, user);
                 update = false;
                 break;
      
             default:
-                userController.updateUser(userId, user);            
+                userController.update(userId, user);            
             }
         }
     }

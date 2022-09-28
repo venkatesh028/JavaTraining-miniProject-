@@ -1,4 +1,4 @@
-/** 
+/*
  * This is a Social media application where user can create account 
  * And add post and view other users post 
  * Can give like and comment to the post

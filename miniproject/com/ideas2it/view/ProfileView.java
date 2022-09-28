@@ -86,14 +86,13 @@ public class ProfileView {
         
     }
 
-
     /**
      * Shows the profile of the user
      * 
      * @param userId userId of the user
      */
     private void showProfile(String userId) {
-        System.out.println(profileController.showProfile(userId));
+        System.out.println(profileController.getProfile(userId));
     }
     
     private void showPostByUserName(String userId) {

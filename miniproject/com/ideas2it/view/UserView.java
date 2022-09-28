@@ -35,9 +35,9 @@ public class UserView {
     public void login() {
         String email;
         String password;
-        boolean accountExist = false;
+        boolean isAccountExist = false;
     
-        while (!accountExist) {
+        while (!isAccountExist) {
             System.out.print("Enter your emailId : ");
             email = scanner.next(); 
             System.out.print("Enter your password : ");
@@ -46,13 +46,13 @@ public class UserView {
             if (userController.isEmailExist(email)) {               
                 if (userController.isValidCredentials(email, password)) {
                     feedView.showNewsFeed(userController.getUserId(email));
-                    accountExist = true;
+                    isAccountExist = true;
                 } else {
                     System.out.println("Invalid password try again ");
                 }                   
             } else {
                 System.out.println("There is no account with this mailID ");
-                accountExist = true;
+                isAccountExist = true;
             }
         } 
     }    
@@ -68,20 +68,20 @@ public class UserView {
         String email;
         String password; 
         String userName = "";  
-        boolean emailValid = false;
-        boolean passwordValid = false;
-        boolean userNameValid = false;     
+        boolean isEmailValid = false;
+        boolean isPasswordValid = false;
+        boolean isUserNameValid = false;     
         System.out.print("Enter your name : ");
         user.setName(scanner.next());      
     
-        while (!emailValid) {
+        while (!isEmailValid) {
             System.out.print("Enter your emailId : ");
             email = scanner.next();
 
             if (userController.isValidEmail(email)) {
                 if (!userController.isEmailExist(email)) {
                     user.setEmail(email);
-                    emailValid = true;
+                    isEmailValid = true;
                 } else {
                     System.out.println("Email Already exist");
                 }                
@@ -91,35 +91,37 @@ public class UserView {
         }
 
     
-        while (!passwordValid) {
+        while (!isPasswordValid) {
             System.out.print("Enter your password : ");
             password = scanner.next();
             
             if (userController.isValidPassword(password)) {
                 user.setPassword(password);
-                passwordValid = true;
+                isPasswordValid = true;
             } else { 
                 System.out.println("Invalid your password must"
-                                     + " contain (a-ZA-Z0-9@#$%^&+=) "
+                                     + " contain (a-ZA-Z0-9) "
+                                     + " and Any Special Character "
                                      + "range must be 8-20");    
             }            
         }    
 
         System.out.println("Set user name to keep your account unique");
 
-        while (!userNameValid) {
+        while (!isUserNameValid) {
             System.out.print("UserName : ");
             userName = scanner.next();
             
             if (!userController.isUserNameExist(userName)) {
                 profile.setUserName(userName);
-                userNameValid = true;    
+                isUserNameValid = true;    
             } else {
                 System.out.println("UserName is already exist Enter a new one");                
             } 
         }          
         user.setProfile(profile);
-        if (userController.createAccount(user)) { 
+
+        if (userController.create(user) == null) { 
             userId = userController.getUserId(user.getEmail());  
                 
             System.out.println("Account Created Succesfully");
@@ -134,7 +136,7 @@ public class UserView {
      */
     public void showHomePage(){
         int selectedOption;
-        boolean appRunning = true;
+        boolean isAppRunning = true;
         StringBuilder statement = new StringBuilder();
         statement.append("\nEnter ").append(Constants.CREATE_ACCOUNT)
                  .append(" --> To Create a new account ").append("\nEnter ")
@@ -142,7 +144,7 @@ public class UserView {
                  .append("\nEnter ").append(Constants.EXIT_HOMEPAGE)
                  .append(" --> To quit ");
     
-        while (appRunning) {
+        while (isAppRunning) {
             System.out.println(statement);
             selectedOption = scanner.nextInt();
 
@@ -156,7 +158,7 @@ public class UserView {
                 break;
 
             case Constants.EXIT_HOMEPAGE:
-                appRunning = false;
+                isAppRunning = false;
                 break;
 
             default:

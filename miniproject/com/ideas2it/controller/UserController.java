@@ -60,8 +60,8 @@ public class UserController {
      * @param  user     details of the user
      * @return boolean  true if account is created successfully else false
      */
-    public boolean createAccount(User user){
-        return userService.createAccount(user);
+    public User create(User user){
+        return userService.create(user);
     }
    
     
@@ -93,8 +93,8 @@ public class UserController {
      * @param  email   email of the user to find the account
      * @return booelan true if the account is deleted Successfully else false
      */      
-    public boolean deleteAccount(String email) {
-        return userService.deleteAccount(email);
+    public boolean delete(String email) {
+        return userService.delete(email);
     }
     
     /** 
@@ -113,8 +113,8 @@ public class UserController {
      * @param  userId userid of the user
      * @return user   user 
      */     
-    public User getUserById(String userId) {
-        return userService.getUserById(userId);  
+    public User getById(String userId) {
+        return userService.getById(userId);  
     }
 
     /**
@@ -134,8 +134,8 @@ public class UserController {
      * @param  user     user 
      * @return userName username of the user 
      */
-    public boolean updateUser(String userId, User user) {
-        return userService.updateUser(userId, user);
+    public User update(String userId, User user) {
+        return userService.update(userId, user);
     }
 
     /** 
@@ -145,7 +145,7 @@ public class UserController {
      * @param  newEmail new email of the user
      * @return boolean  true after the update
      */
-    public boolean updateLoginCredentials(String oldEmail, String newEmail) {
+    public String updateLoginCredentials(String oldEmail, String newEmail) {
         return userService.updateLoginCredentials(oldEmail, newEmail);
     }
   

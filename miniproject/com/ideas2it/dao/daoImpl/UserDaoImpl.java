@@ -25,9 +25,9 @@ public class UserDaoImpl implements UserDao {
     }
 
    /**
-    * Creating the obj for the UserDao only for one time 
+    * Creating the obj for the UserDaoImpl only for one time 
     *
-    * @return userDao userDao is the object of the userDao
+    * @return userDao userDaoImpl is the object of the userDao
     */
     public static synchronized UserDaoImpl getInsatance() {
         if (userDaoImpl == null) {
@@ -40,17 +40,16 @@ public class UserDaoImpl implements UserDao {
      * {@inheritDoc}
      */
     @Override
-    public boolean createAccount(User user) {
-        users.put(user.getUserId(), user);
+    public User create(User user) {        
         loginCredentials.put(user.getEmail(), user.getUserId());
-        return true;        
+        return users.put(user.getUserId(), user);        
     }
     
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean deleteAccount(String userId) {
+    public boolean delete(String userId) {
         users.remove(userId);
         return true;    
     }
@@ -67,7 +66,7 @@ public class UserDaoImpl implements UserDao {
      * {@inheritDoc}
      */
     @Override
-    public User getUserById(String userId) {
+    public User getById(String userId) {
         return users.get(userId);
     }
 
@@ -91,9 +90,8 @@ public class UserDaoImpl implements UserDao {
      * {@inheritDoc}
      */
     @Override 
-    public boolean updateUser(String userId, User user) {
-        users.put(userId, user);
-        return true;   
+    public User update(String userId, User user) {        
+        return users.put(userId, user);   
     }
 
     /**
@@ -109,10 +107,9 @@ public class UserDaoImpl implements UserDao {
      * {@inheritDoc}
      */
     @Override   
-    public boolean updateLoginCredentials (String oldEmail, String newEmail) {
+    public String updateLoginCredentials(String oldEmail, String newEmail) {
         String userId;
-        userId = loginCredentials.remove(oldEmail);
-        loginCredentials.put(newEmail, userId);
-        return true;        
+        userId = loginCredentials.remove(oldEmail);        
+        return loginCredentials.put(newEmail, userId);        
     }
 }
