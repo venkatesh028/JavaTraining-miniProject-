@@ -27,10 +27,8 @@ public class Transport {
                .append(" TO exit ");
      try {
         while (isRunning) {
-            System.out.print(message);
-
-            
-            	selectedOption = scanner.nextInt();
+            System.out.print(message);            
+            selectedOption = scanner.nextInt();
 
             switch (selectedOption) {
             case FLIGHT:
@@ -54,10 +52,9 @@ public class Transport {
                 break;
             }
           }
-
-            } catch (InputMismatchException e) {
+        } catch (InputMismatchException e) {
                 main(new String[1] );
-            }
+        }
         
     }
 
