@@ -14,10 +14,7 @@ import com.ideas2it.dao.daoImpl.PostDaoImpl;
  * @author Venkatesh TM
  */
 public class PostService {
-    private Post post; 
     private PostDao postDao;
-    private String postId;
-    private List<Post> userPost;
     
     public PostService() {
         this.postDao = PostDaoImpl.getInsatance();
@@ -29,6 +26,7 @@ public class PostService {
      * @return boolean true or false based on the result
      */
     public boolean isPostEmpty() {
+        List<Post> userPost;
         userPost = postDao.getUserPost();
         return userPost.isEmpty();
     }
@@ -41,6 +39,8 @@ public class PostService {
      * @return boolean  true after adding the post
      */
     public boolean addPost(String postedBy, String quotes) {
+        Post post; 
+        String postId;
         postId = UUID.randomUUID().toString();
         post = new Post(postId, postedBy, quotes);
         return postDao.addPost(post);  
@@ -54,6 +54,7 @@ public class PostService {
      * @return boolean       true after adding the like 
      */ 
     public boolean addLike(String likedUserName, String postId) {
+        List<Post> userPost;
         userPost = postDao.getUserPost();
 
         for (Post post : userPost) {
@@ -80,6 +81,7 @@ public class PostService {
      * @return boolean true or false based on the result
      */
     public boolean addComment(String postId, String comment) {
+        List<Post> userPost;
         userPost = postDao.getUserPost();
 
         for (Post post : userPost) {
@@ -97,8 +99,14 @@ public class PostService {
      *
      * @return post list of post
      */
-    public List<Post> getUserPost() {
-        return postDao.getUserPost();
+    public String getUserPost() {
+        StringBuilder postMessage = new StringBuilder();
+        List<Post> userPost;
+        userPost = postDao.getUserPost();
+        for (Post post : userPost) {
+            postMessage.append("\n").append(post);
+        }
+        return postMessage.toString();
     }
     
     /**
@@ -108,11 +116,12 @@ public class PostService {
      * @return postByUserName post of the particular user based on username
      */
     public String getPostByUserName(String userName) {
-        userPost = getUserPost();
+        List<Post> userPost;
+        userPost = postDao.getUserPost();
         StringBuilder postByUserName = new StringBuilder();
- 
+        Post post;
         for (int index = 0; index < userPost.size(); index++) {
-            post = userPost.get(0);
+            post = userPost.get(index);
             if (post.getPostedBy().equals(userName)) {
                 postByUserName.append(post);        
             }
@@ -128,7 +137,9 @@ public class PostService {
      * @return result  true or false 
      */
     public boolean deletePost(String postId) { 
-        userPost = getUserPost();
+        List<Post> userPost;
+        Post post; 
+        userPost = postDao.getUserPost();
         boolean result = false;
         for (int index = 0; index < userPost.size(); index++) {
             post = userPost.get(0);

@@ -2,6 +2,7 @@ package com.ideas2it.view;
 
 import java.util.Scanner;
 import com.ideas2it.constant.Constants;
+import java.util.InputMismatchException;
 
 /**
  * Shows the feed page to user based on the user action
@@ -32,8 +33,9 @@ public class FeedView {
      *
      * @param userId
      */
-    public void showNewsFeed(String userId) {
+    public void showNewsFeed(String userId){
         int action;
+        Scanner scanner = new Scanner(System.in);
         boolean newsFeedRunning = true;
         StringBuilder statement = new StringBuilder();
         statement.append("\nEnter ").append(Constants.SHOW_POST)
@@ -47,8 +49,7 @@ public class FeedView {
     
         while (newsFeedRunning) {
             System.out.println(statement);
-            action = scanner.nextInt();
-            scanner.skip("\r\n");
+            action = getInput();
             
             switch (action) {
             case Constants.SHOW_POST:
@@ -67,7 +68,19 @@ public class FeedView {
                 newsFeedRunning = false;
                 break;
             }
-        }
-                   
+        }                   
     }
+
+    private int getInput() {
+        Scanner scanner = new Scanner(System.in);
+        int input;
+        try{
+            input = scanner.nextInt();    
+        } catch(InputMismatchException e) {
+            System.out.println("Enter Only Number not String ");
+            return 0;
+        }
+        return input;
+    }
+
 }

@@ -43,7 +43,7 @@ public class PostController {
      *
      * @return post list of post
      */
-    public List<Post> showPost() {
+    public String getUserPost() {
         return postService.getUserPost();
     }   
     

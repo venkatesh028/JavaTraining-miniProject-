@@ -1,5 +1,7 @@
 package com.ideas2it.model;
 
+import java.time.LocalDate;
+
 import com.ideas2it.model.Profile;
 
 /**
@@ -17,7 +19,7 @@ public class User {
     private String email;
     private String password;
     private String gender;
-    private String dateOfBirth;
+    private LocalDate dateOfBirth;
     private String phoneNumber;
     private int    age;
     private Profile profile;
@@ -55,8 +57,12 @@ public class User {
         this.gender = gender;
     }
    
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+    
+    public void setAge(int age) {
+        this.age = age;
     }
     
     public void setPhoneNumber(String phoneNumber) {
@@ -87,7 +93,7 @@ public class User {
         return gender;
     }
     
-    public String getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
      

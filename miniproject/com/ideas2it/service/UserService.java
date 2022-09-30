@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.UUID;
+import java.time.LocalDate;
+import java.time.Period;
 
 import com.ideas2it.dao.UserDao;
 import com.ideas2it.dao.daoImpl.UserDaoImpl;
@@ -165,6 +167,22 @@ public class UserService {
      */    
     public String getUserName(String userId) {
         return userDao.getUserName(userId);
+    }
+    
+    public boolean isPasswordMatches(String userId, String oldPassword) {
+        Map<String, User> users; 
+        User user;
+        users = userDao.getUsers();
+        user = users.get(userId);
+        return user.getPassword().equals(oldPassword);
+    }
+    
+    public int calculateAge(String dateOfBirth) {
+        
+        LocalDate currentDate = LocalDate.now();
+        Period age;
+        age = Period.between(LocalDate.parse(dateOfBirth), currentDate);
+        return age.getYears();    
     }
   
 }

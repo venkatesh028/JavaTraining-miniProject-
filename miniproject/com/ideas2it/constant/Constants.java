@@ -12,6 +12,7 @@ public class Constants {
                                                  + "(?=.*[a-z])(?=.*[A-Z])"
                                                  + "(?=.*[@#$%^&+=])" 
                                                  + "(?=\\S+$).{8,20}$";
+    public final static String PHONE_NUMBER_FORMAT = "(\\+91-)?[6-9][0-9]{9}";
 
     public final static int CREATE_ACCOUNT = 1;
     public final static int LOGIN = 2;
@@ -45,6 +46,7 @@ public class Constants {
     public final static int UPDATE_GENDER = 3;
     public final static int UPDATE_DOB = 4;
     public final static int UPDATE_PHONENUMBER = 5;
-    public final static int EXIT_UPDATE = 6;
+    public final static int UPDATE_PASSWORD = 6;
+    public final static int EXIT_UPDATE = 7;
     
 }

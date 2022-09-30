@@ -1,7 +1,7 @@
 package com.ideas2it.view;
 
 import java.util.Scanner;
-
+import java.util.InputMismatchException;
 import com.ideas2it.controller.PostController;
 import com.ideas2it.controller.ProfileController; 
 import com.ideas2it.constant.Constants;
@@ -92,13 +92,12 @@ public class PostView {
             if (postController.isPostEmpty()) {
                 System.out.println("Post is not available");    
             } else {
-                System.out.println(postController.showPost());
+                System.out.println(postController.getUserPost());
                     
             } 
             
             System.out.println(statement);
-            action = scanner.nextInt();
-            scanner.skip("\r\n");
+            action = getInput();
 
             switch (action) {
             case Constants.ADDPOST:
@@ -122,5 +121,17 @@ public class PostView {
 
             }    
         }
+    }
+
+    private int getInput() {
+        Scanner scanner = new Scanner(System.in);
+        int input;
+        try{
+            input = scanner.nextInt();    
+        } catch(InputMismatchException e) {
+            System.out.println("Enter Only Number not String ");
+            return 0;
+        }
+        return input;
     }
 }

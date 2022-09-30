@@ -3,9 +3,7 @@
  * And add post and view other users post 
  * Can give like and comment to the post
  */
-
 import com.ideas2it.view.UserView;
-
 /**
  * call the home page in userView 
  *
@@ -14,7 +12,7 @@ import com.ideas2it.view.UserView;
  */
 public class Media {
     public static void main(String[] args) {
-        UserView userView = new UserView();        
-        userView.showHomePage();           
-    }
+        UserView userView = new UserView(); 
+        userView.showHomePage();  
+    }      
 }

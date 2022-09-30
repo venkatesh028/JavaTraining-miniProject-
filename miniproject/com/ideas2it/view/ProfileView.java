@@ -1,6 +1,7 @@
 package com.ideas2it.view;
 
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
 import com.ideas2it.controller.ProfileController;
 import com.ideas2it.controller.PostController;
@@ -46,8 +47,8 @@ public class ProfileView {
 
         while (updatePage) {
             System.out.print(updateMessage);
-            selectedUpdate = scanner.nextInt();         
-      
+            selectedUpdate = getInput();         
+       
             switch (selectedUpdate) {            
             case Constants.UPDATE_USERNAME:
                 String newUserName;
@@ -94,12 +95,21 @@ public class ProfileView {
     private void showProfile(String userId) {
         System.out.println(profileController.getProfile(userId));
     }
-    
+
+    /**
+     * Shows the post by the username
+     * 
+     * @param userId userId of the user
+     */    
     private void showPostByUserName(String userId) {
         String userName = profileController.getUserName(userId);
         System.out.println(postController.getPostByUserName(userName)); 
     }
     
+    /**
+     * Delete the post based on the id
+     *
+     */
     private void deletePost() {
         String postId;
         System.out.print("Enter the PostId : ");
@@ -132,8 +142,7 @@ public class ProfileView {
             showProfile(userId); 
             showPostByUserName(userId);
             System.out.println(profileMessage);
-            selectedOption = scanner.nextInt();
-            scanner.skip("\r\n");
+            selectedOption = getInput();
 
             switch (selectedOption) { 
             case Constants.UPDATE_PROFILE:
@@ -152,6 +161,18 @@ public class ProfileView {
                 System.out.println("You entered wrong option");
             }
         }  
+    }
+
+    private int getInput() {
+        Scanner scanner = new Scanner(System.in);
+        int input;
+        try{
+            input = scanner.nextInt();
+        } catch(InputMismatchException e) {
+            System.out.println("Enter Only Number not String ");
+            return 0;
+        }
+        return input; 
     }
 
 } 

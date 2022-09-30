@@ -1,5 +1,7 @@
 package com.ideas2it.controller;
 
+import java.time.format.DateTimeParseException;
+
 import com.ideas2it.service.UserService;
 import com.ideas2it.util.ValidationUtil;
 import com.ideas2it.model.User;
@@ -147,6 +149,28 @@ public class UserController {
      */
     public String updateLoginCredentials(String oldEmail, String newEmail) {
         return userService.updateLoginCredentials(oldEmail, newEmail);
+    }
+    
+    public boolean isValidDateOfBirth(String dateOfBirth) {
+        try {
+            validationUtil.isValidDateOfBirth(dateOfBirth);
+        } catch(DateTimeParseException DE) {
+            return false;
+        }
+        return true;
+
+    }
+    
+    public boolean isValidPhoneNumber(String phoneNumber) {
+        return validationUtil.isValidPhoneNumber(phoneNumber);
+    }
+    
+    public boolean isPasswordMatches(String userId, String oldPassword) {
+        return userService.isPasswordMatches(userId, oldPassword);
+    }
+
+    public int calculateAge(String dateOfBirth) {
+        return userService.calculateAge(dateOfBirth);
     }
   
 }

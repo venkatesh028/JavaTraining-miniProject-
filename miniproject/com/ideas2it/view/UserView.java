@@ -1,6 +1,9 @@
 package com.ideas2it.view;
 
 import java.util.Scanner;
+import java.lang.Exception;  
+import java.util.InputMismatchException;
+import java.time.LocalDate;
 
 import com.ideas2it.controller.UserController;
 import com.ideas2it.constant.Constants;
@@ -15,17 +18,16 @@ import com.ideas2it.model.Profile;
  * @author Venkatesh TM 
  */
 public class UserView {
-    private Scanner scanner;
     private UserController userController;
     private String userId;
     private FeedView feedView;
-    
+    private Scanner scanner;
+
     public UserView() {
-        this.scanner = new Scanner(System.in);
         this.userController = new UserController();
+        this.scanner = new Scanner(System.in);
         this.feedView = new FeedView();
     }
-
 
     /** 
      * Gets the emailId and password from the user
@@ -68,86 +70,109 @@ public class UserView {
         String email;
         String password; 
         String userName = "";  
+        String dateOfBirth = "";
+        int age;
         boolean isEmailValid = false;
         boolean isPasswordValid = false;
-        boolean isUserNameValid = false;     
+        boolean isUserNameValid = false; 
+        boolean isValidDateOfBirth = false; 
         System.out.print("Enter your name : ");
-        user.setName(scanner.next());      
-    
-        while (!isEmailValid) {
-            System.out.print("Enter your emailId : ");
-            email = scanner.next();
-
-            if (userController.isValidEmail(email)) {
-                if (!userController.isEmailExist(email)) {
-                    user.setEmail(email);
-                    isEmailValid = true;
-                } else {
-                    System.out.println("Email Already exist");
-                }                
-            } else {
-                System.out.println("Invalid email format");     
-            }  
-        }
-
-    
-        while (!isPasswordValid) {
-            System.out.print("Enter your password : ");
-            password = scanner.next();
+        user.setName(scanner.next());   
+        
+        while (!isValidDateOfBirth) {
+            System.out.print("Enter the DateofBirth : ");
+            dateOfBirth = scanner.next();
             
-            if (userController.isValidPassword(password)) {
-                user.setPassword(password);
-                isPasswordValid = true;
-            } else { 
-                System.out.println("Invalid your password must"
-                                     + " contain (a-ZA-Z0-9) "
-                                     + " and Any Special Character "
-                                     + "range must be 8-20");    
-            }            
-        }    
-
-        System.out.println("Set user name to keep your account unique");
-
-        while (!isUserNameValid) {
-            System.out.print("UserName : ");
-            userName = scanner.next();
-            
-            if (!userController.isUserNameExist(userName)) {
-                profile.setUserName(userName);
-                isUserNameValid = true;    
+            if (userController.isValidDateOfBirth(dateOfBirth)) {
+                user.setDateOfBirth(LocalDate.parse(dateOfBirth));
+                isValidDateOfBirth = true;
             } else {
-                System.out.println("UserName is already exist Enter a new one");                
-            } 
+                System.out.println("Invalid date Enter in given format (yyyy-mm-dd)");
+            }
         }          
-        user.setProfile(profile);
+        
+        age = userController.calculateAge(dateOfBirth);
+        if (age>=18) {
+            user.setAge(age );
+            while (!isEmailValid) {
+                System.out.print("Enter your emailId : ");
+                email = scanner.next();
 
-        if (userController.create(user) == null) { 
-            userId = userController.getUserId(user.getEmail());  
+                if (userController.isValidEmail(email)) {
+                    if (!userController.isEmailExist(email)) {
+                        user.setEmail(email);
+                        isEmailValid = true;
+                    } else {
+                        System.out.println("Email Already exist");
+                    }                
+                } else {
+                    System.out.println("Invalid email format");     
+                }  
+            }
+
+    
+            while (!isPasswordValid) {
+                System.out.print("Enter your password : ");
+                password = scanner.next();
+            
+                if (userController.isValidPassword(password)) {
+                    user.setPassword(password);
+                    isPasswordValid = true;
+                } else { 
+                    System.out.println("Invalid your password must"
+                                         + " contain (a-ZA-Z0-9) "
+                                         + " and Any Special Character "
+                                         + "range must be 8-20");    
+                }            
+            }    
+
+            System.out.println("Set user name to keep your account unique");
+
+            while (!isUserNameValid) {
+                System.out.print("UserName : ");
+                userName = scanner.next();
+            
+                if (!userController.isUserNameExist(userName)) {
+                    profile.setUserName(userName);
+                    isUserNameValid = true;    
+                } else {
+                    System.out.println("UserName is already exist Enter a new one");                
+                } 
+            }          
+            user.setProfile(profile);
+
+            if (userController.create(user) == null) { 
+                userId = userController.getUserId(user.getEmail());  
                 
-            System.out.println("Account Created Succesfully");
-            feedView.showNewsFeed(userId);
+                System.out.println("Account Created Succesfully");
+                feedView.showNewsFeed(userId); 
+            } else {
+                System.out.println("This email Id is alredy exist");
+            }  
+        
         } else {
-            System.out.println("This email Id is alredy exist");
-        }                          
+            System.out.println("You are not elibile to create a account");
+        }                        
     } 
     
     /**  
      * Shows the home page to the user 
      */
-    public void showHomePage(){
+    public void showHomePage() {
         int selectedOption;
-        boolean isAppRunning = true;
+        boolean isPageActive = true;
         StringBuilder statement = new StringBuilder();
         statement.append("\nEnter ").append(Constants.CREATE_ACCOUNT)
                  .append(" --> To Create a new account ").append("\nEnter ")
                  .append(Constants.LOGIN).append(" --> To login ")
                  .append("\nEnter ").append(Constants.EXIT_HOMEPAGE)
                  .append(" --> To quit ");
-    
-        while (isAppRunning) {
+       
+        while (isPageActive) {   
+            boolean a = false;                     
             System.out.println(statement);
-            selectedOption = scanner.nextInt();
-
+            selectedOption = getInput();  
+          
             switch (selectedOption) {
             case Constants.CREATE_ACCOUNT:
                 createAccount();
@@ -158,16 +183,26 @@ public class UserView {
                 break;
 
             case Constants.EXIT_HOMEPAGE:
-                isAppRunning = false;
+                isPageActive = false;
                 break;
 
             default:
                 System.out.println("you entered wrong choice "); 
-            }
-            
-        }
-        
+            }            
+        }       
     }
+
+    private int getInput() {
+        Scanner scanner = new Scanner(System.in);
+        int input;
+        try{
+            input = scanner.nextInt();
+        } catch(InputMismatchException e) {
+            System.out.println("Enter Only Number not String ");
+            return 0;
+        }
+        return input; 
+    }  
 }
     
     

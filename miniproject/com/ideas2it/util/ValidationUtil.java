@@ -1,5 +1,7 @@
 package com.ideas2it.util;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import com.ideas2it.constant.Constants;
 
 /**
@@ -28,5 +30,17 @@ public class ValidationUtil {
      */
     public boolean isValidPassword(String password) {
         return password.matches(Constants.PASSWORD_FORMAT);
+    }
+    
+    public boolean isValidDateOfBirth(String dateOfBirth) throws DateTimeParseException {
+        LocalDate dob = LocalDate.parse(dateOfBirth);
+        if (dob.toString().equals(dateOfBirth)) {
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean isValidPhoneNumber(String phoneNumber) { 
+        return phoneNumber.matches(Constants.PHONE_NUMBER_FORMAT);
     }
 }
