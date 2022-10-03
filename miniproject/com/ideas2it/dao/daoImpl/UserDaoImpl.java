@@ -112,4 +112,5 @@ public class UserDaoImpl implements UserDao {
         userId = loginCredentials.remove(oldEmail);        
         return loginCredentials.put(newEmail, userId);        
     }
+   
 }

@@ -61,5 +61,15 @@ public class ProfileService {
     public String getUserName(String userId) {
         return userService.getUserName(userId);
     }
+
+    /**
+     * Gets the userprofile based on the username
+     *
+     * @param  userName     username searched by the user
+     * @return usersProfile userprofile based on the userName
+     */ 
+    public Profile getUserProfile(String userName) {      
+        return userService.getUserProfile(userName);    
+    }
     
 }

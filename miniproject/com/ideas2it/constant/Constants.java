@@ -8,11 +8,9 @@ package com.ideas2it.constant;
  */
 public class Constants {
     public final static String EMAIL_FORMAT = "^[a-zA-Z0-9][a-zA-Z0-9.]{3,30}@[a-zA-Z0-9]+\\.[a-zA-Z0-9.]{3,}$";
-    public final static String PASSWORD_FORMAT = "^(?=.*[0-9])"
-                                                 + "(?=.*[a-z])(?=.*[A-Z])"
-                                                 + "(?=.*[@#$%^&+=])" 
-                                                 + "(?=\\S+$).{8,20}$";
+    public final static String PASSWORD_FORMAT = "^[a-zA-Z0-9]{4,9}[@$&*]{1,}[0-9]{1,3}";
     public final static String PHONE_NUMBER_FORMAT = "(\\+91-)?[6-9][0-9]{9}";
+    public final static String NAME_FORMAT = "[a-zA-Z\\s]{3,20}";   
 
     public final static int CREATE_ACCOUNT = 1;
     public final static int LOGIN = 2;
@@ -20,8 +18,10 @@ public class Constants {
 
     public final static int SHOW_POST = 1;
     public final static int SHOW_PROFILE = 2;
-    public final static int SHOW_SETTING = 3;
-    public final static int LOGUT = 4;
+    public final static int SHOW_NOTIFICATION = 3;
+    public final static int SHOW_SEARCH  = 4;
+    public final static int SHOW_SETTING = 5;
+    public final static int LOGUT = 6;
     
     public final static int UPDATE_PROFILE = 1;
     public final static int DELETE_POST =2;
@@ -48,5 +48,11 @@ public class Constants {
     public final static int UPDATE_PHONENUMBER = 5;
     public final static int UPDATE_PASSWORD = 6;
     public final static int EXIT_UPDATE = 7;
+    
+    public final static int SEARCH = 1;
+    public final static int TO_GO_BACK = 2;
+    
+    public final static int ADD_FRIEND = 1;
+    public final static int REMOVE_FRIEND = 2;
     
 }

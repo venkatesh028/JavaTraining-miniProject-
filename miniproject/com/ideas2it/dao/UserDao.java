@@ -84,4 +84,5 @@ public interface UserDao {
      * @return username username of the user
      */  
     public String getUserName(String userId);
+    
 }

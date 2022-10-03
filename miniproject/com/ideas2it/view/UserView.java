@@ -67,83 +67,22 @@ public class UserView {
     public void createAccount() {
         User user = new User();
         Profile profile = new Profile();
-        String email;
-        String password; 
-        String userName = "";  
-        String dateOfBirth = "";
         int age;
-        boolean isEmailValid = false;
-        boolean isPasswordValid = false;
-        boolean isUserNameValid = false; 
-        boolean isValidDateOfBirth = false; 
-        System.out.print("Enter your name : ");
-        user.setName(scanner.next());   
         
-        while (!isValidDateOfBirth) {
-            System.out.print("Enter the DateofBirth : ");
-            dateOfBirth = scanner.next();
-            
-            if (userController.isValidDateOfBirth(dateOfBirth)) {
-                user.setDateOfBirth(LocalDate.parse(dateOfBirth));
-                isValidDateOfBirth = true;
-            } else {
-                System.out.println("Invalid date Enter in given format (yyyy-mm-dd)");
-            }
-        }          
-        
-        age = userController.calculateAge(dateOfBirth);
+        user.setName(getName());   
+        user.setDateOfBirth(getDateOfBirth());          
+        age = userController.calculateAge(user.getDateOfBirth());
+
         if (age>=18) {
             user.setAge(age );
-            while (!isEmailValid) {
-                System.out.print("Enter your emailId : ");
-                email = scanner.next();
-
-                if (userController.isValidEmail(email)) {
-                    if (!userController.isEmailExist(email)) {
-                        user.setEmail(email);
-                        isEmailValid = true;
-                    } else {
-                        System.out.println("Email Already exist");
-                    }                
-                } else {
-                    System.out.println("Invalid email format");     
-                }  
-            }
-
-    
-            while (!isPasswordValid) {
-                System.out.print("Enter your password : ");
-                password = scanner.next();
-            
-                if (userController.isValidPassword(password)) {
-                    user.setPassword(password);
-                    isPasswordValid = true;
-                } else { 
-                    System.out.println("Invalid your password must"
-                                         + " contain (a-ZA-Z0-9) "
-                                         + " and Any Special Character "
-                                         + "range must be 8-20");    
-                }            
-            }    
-
-            System.out.println("Set user name to keep your account unique");
-
-            while (!isUserNameValid) {
-                System.out.print("UserName : ");
-                userName = scanner.next();
-            
-                if (!userController.isUserNameExist(userName)) {
-                    profile.setUserName(userName);
-                    isUserNameValid = true;    
-                } else {
-                    System.out.println("UserName is already exist Enter a new one");                
-                } 
-            }          
+            user.setEmail(getEmail());  
+            user.setPassword(getPassword());
+            System.out.println("Set user name to keep your account unique"); 
+            profile.setUserName(getUserName());       
             user.setProfile(profile);
 
             if (userController.create(user) == null) { 
-                userId = userController.getUserId(user.getEmail());  
-                
+                userId = userController.getUserId(user.getEmail());                  
                 System.out.println("Account Created Succesfully");
                 feedView.showNewsFeed(userId); 
             } else {
@@ -191,7 +130,129 @@ public class UserView {
             }            
         }       
     }
+    
+    /** 
+     * Get name from the user
+     * And validate it 
+     * 
+     * @return name name of the user if it is valid
+     */
+    private String getName() {
+        boolean isValid = false;
+        String name = "";
+ 
+        while(!isValid) {
+            System.out.print("Enter your Name : ");
+            name = scanner.nextLine();
+            isValid = userController.isValidName(name);
+        }
+        return name;
+    }
+    
+    /**
+     * Get dateofBirth of the user
+     * And Validate it
+     *
+     * @return dateOfBirth if it is valid 
+     */
+    private LocalDate getDateOfBirth() {
+        boolean isValid = false;
+        String dateOfBirth= "";
 
+        while (!isValid) {
+            System.out.print("Enter the DateofBirth in given format (yyyy-mm-dd) : ");
+            dateOfBirth = scanner.next();
+            
+            if (userController.isValidDateOfBirth(dateOfBirth)) {                
+                isValid= true;
+            } else {
+                System.out.println("Invalid date");
+            }
+        } 
+        return LocalDate.parse(dateOfBirth);        
+    }
+    
+    /**
+     * Get email of the user 
+     * And validate it
+     *
+     * @return email email of the user if it is valid
+     */
+    private String getEmail() {
+        boolean isValid = false;
+        String email = "";
+
+        while (!isValid) {
+            System.out.print("Enter your emailId : ");
+            email = scanner.next();
+
+            if (userController.isValidEmail(email)) {
+                if (!userController.isEmailExist(email)) {
+                    isValid = true;
+                } else {
+                    System.out.println("Email Already exist");
+                }                
+            } else {
+                    System.out.println("Invalid email format");     
+            }  
+        }
+        return email;
+    }
+    
+    /**
+     * Get the password of the user
+     * And validate it
+     * 
+     * @return password  password of the user if it is valid
+     */
+    private String getPassword() { 
+        boolean isValid = false;
+        String password = "";
+         
+        while (!isValid) {
+            System.out.print("Enter your password (a-ZA-Z0-9 and Special Character) : ");
+            password = scanner.next();
+            
+            if (userController.isValidPassword(password)) {
+                isValid = true;
+            } else {
+                System.out.println("Invalid your password must "
+                                         + "contain (a-ZA-Z0-9) "
+                                         + "and Any Special Character "
+                                         + "range must be 8-20");    
+            }            
+        }  
+        return password;        
+    }
+    
+    /**
+     * Get username of the user
+     * And validate it
+     * 
+     * @return userName username of the user if it is valid
+     */
+    private String getUserName() {
+        boolean isValid = false;
+        String userName = "";
+
+        while (!isValid) {
+            System.out.print("UserName : ");
+            userName = scanner.next();
+            
+            if (!userController.isUserNameExist(userName)) {
+                isValid = true;    
+            } else {
+                System.out.println("UserName is already exist Enter a new one");                
+            } 
+        }  
+        return userName;        
+    }  
+ 
+    /**
+     * Get input form the user 
+     * 
+     * @return input input given by the user
+     */
     private int getInput() {
         Scanner scanner = new Scanner(System.in);
         int input;

@@ -1,6 +1,7 @@
 package com.ideas2it.controller;
 
 import java.time.format.DateTimeParseException;
+import java.time.LocalDate;
 
 import com.ideas2it.service.UserService;
 import com.ideas2it.util.ValidationUtil;
@@ -169,8 +170,12 @@ public class UserController {
         return userService.isPasswordMatches(userId, oldPassword);
     }
 
-    public int calculateAge(String dateOfBirth) {
+    public int calculateAge(LocalDate dateOfBirth) {
         return userService.calculateAge(dateOfBirth);
+    }
+    
+    public boolean isValidName(String name) {
+        return validationUtil.isValidName(name);
     }
   
 }

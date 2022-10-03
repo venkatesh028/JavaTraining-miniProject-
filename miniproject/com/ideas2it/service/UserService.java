@@ -177,12 +177,24 @@ public class UserService {
         return user.getPassword().equals(oldPassword);
     }
     
-    public int calculateAge(String dateOfBirth) {
-        
+    public int calculateAge(LocalDate dateOfBirth) {        
         LocalDate currentDate = LocalDate.now();
         Period age;
-        age = Period.between(LocalDate.parse(dateOfBirth), currentDate);
+        age = Period.between(dateOfBirth, currentDate);
         return age.getYears();    
+    }
+    
+    public Profile getUserProfile(String userName) {
+        Map<String, User> users = userDao.getUsers();
+        Profile profile = null;
+
+        for (User user : users.values()) {
+            if (user.getProfile().getUserName().equals(userName)) {
+                profile = user.getProfile();
+                break;
+            }
+        }
+        return profile;        
     }
   
 }

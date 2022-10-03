@@ -70,9 +70,7 @@ public class SettingView {
 
             switch (selectedOption) {
             case Constants.UPDATE_NAME:
-                System.out.print("Enter Name : ");
-                String name = scanner.next();
-                user.setName(name);
+                user.setName(getName());
                 break;
 
             case Constants.UPDATE_EMAIL:
@@ -115,7 +113,7 @@ public class SettingView {
                     dateOfBirth = scanner.next();
                     int age;
                     if (userController.isValidDateOfBirth(dateOfBirth)) {
-                        age = userController.calculateAge(dateOfBirth);
+                        age = userController.calculateAge(LocalDate.parse(dateOfBirth));
                         if (age>=18){
                             user.setDateOfBirth(LocalDate.parse(dateOfBirth));
                             user.setAge(age);
@@ -260,5 +258,22 @@ public class SettingView {
             return 0;
         }
         return input; 
+    }
+    
+    /**
+     * Get the name from the user
+     *
+     * @return name  name of the user 
+     */
+    private String getName() {
+        boolean isValid = false;
+        String name = "";
+ 
+        while(!isValid) {
+            System.out.print("Enter your Name : ");
+            name = scanner.nextLine();
+            isValid = userController.isValidName(name);
+        }
+        return name;
     }
 }

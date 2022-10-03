@@ -43,4 +43,8 @@ public class ValidationUtil {
     public boolean isValidPhoneNumber(String phoneNumber) { 
         return phoneNumber.matches(Constants.PHONE_NUMBER_FORMAT);
     }
+   
+    public boolean isValidName(String name) {
+        return name.matches(Constants.NAME_FORMAT);
+    }
 }

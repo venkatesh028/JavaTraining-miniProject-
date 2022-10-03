@@ -1,8 +1,10 @@
 package com.ideas2it.view;
 
 import java.util.Scanner;
-import com.ideas2it.constant.Constants;
 import java.util.InputMismatchException;
+
+import com.ideas2it.constant.Constants;
+
 
 /**
  * Shows the feed page to user based on the user action
@@ -16,6 +18,7 @@ public class FeedView {
     private ProfileView profileView;
     private SettingView settingView;
     private Scanner scanner;
+    private SearchPage searchPage;
 
     /**
      * Creates a new object for the FeedView and initialize the feilds
@@ -26,6 +29,7 @@ public class FeedView {
         this.settingView = new SettingView();
         this.scanner = new Scanner(System.in);
         this.profileView = new ProfileView();
+        this.searchPage = new SearchPage();
     }
     
     /**
@@ -37,18 +41,22 @@ public class FeedView {
         int action;
         Scanner scanner = new Scanner(System.in);
         boolean newsFeedRunning = true;
-        StringBuilder statement = new StringBuilder();
-        statement.append("\nEnter ").append(Constants.SHOW_POST)
-                 .append(" --> To View Post ").append("\nEnter ")
-                 .append(Constants.SHOW_PROFILE)
-                 .append(" --> To view your profile ")
-                 .append("\nEnter ").append(Constants.SHOW_SETTING)
-                 .append(" --> To go to setting ")
-                 .append("\nEnter ").append(Constants.LOGUT)
-                 .append(" --> To Logout");
+        StringBuilder message = new StringBuilder();
+        message.append("\nEnter ").append(Constants.SHOW_POST)
+               .append(" --> To View Post ").append("\nEnter ")
+               .append(Constants.SHOW_PROFILE)
+               .append(" --> To View your profile ")
+               .append("\nEnter ").append(Constants.SHOW_NOTIFICATION)
+               .append(" --> To View Notification")
+               .append("\nEnter ").append(Constants.SHOW_SEARCH)
+               .append(" --> To go to Search page")
+               .append("\nEnter ").append(Constants.SHOW_SETTING)
+               .append(" --> To go to setting ")
+               .append("\nEnter ").append(Constants.LOGUT)
+               .append(" --> To Logout");
     
         while (newsFeedRunning) {
-            System.out.println(statement);
+            System.out.println(message);
             action = getInput();
             
             switch (action) {
@@ -58,6 +66,13 @@ public class FeedView {
             
             case Constants.SHOW_PROFILE:
                 profileView.displayProfilePage(userId);
+                break;
+            case Constants.SHOW_NOTIFICATION:
+                
+                break;
+
+            case Constants.SHOW_SEARCH:
+                searchPage.showSearchPage(userId);
                 break;
 
             case Constants.SHOW_SETTING:
@@ -70,7 +85,12 @@ public class FeedView {
             }
         }                   
     }
-
+    
+    /**
+     * Get input from the user 
+     * 
+     * @return input 
+     */
     private int getInput() {
         Scanner scanner = new Scanner(System.in);
         int input;

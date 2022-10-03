@@ -28,7 +28,7 @@ public class ProfileController {
     } 
 
     /**
-     * update the username of the user
+     * Update the username of the user
      *
      * @param  userId      userId of the user
      * @param  newUserName new username of the user
@@ -39,7 +39,7 @@ public class ProfileController {
     }
 
     /**
-     * update bio of the user  
+     * Update bio of the user  
      * 
      * @param  userId  userId of the user
      * @param  bio     bio of the user 
@@ -50,13 +50,23 @@ public class ProfileController {
     }
 
     /**
-     * gets the userName of the user
+     * Gets the userName of the user
      *
      * @param  userId   userId of the user
      * @return userName userName of the user
      */
     public String getUserName(String userId) {
         return profileService.getUserName(userId);
+    }
+    
+    /**
+     * Gets the userprofile based on the username
+     *
+     * @param  userName     username searched by the user
+     * @return usersProfile userprofile based on the userName
+     */
+    public Profile getUserProfile(String userName) {
+        return profileService.getUserProfile(userName);
     }
        
 } 

@@ -1,6 +1,7 @@
 package com.ideas2it.model;
 
 import java.util.List;
+import java.util.Set;
 
 import com.ideas2it.model.Post;
 
@@ -18,7 +19,8 @@ public class Profile {
     private String bio;
     private int friendsCount;
     private List<Post> post; 
-    
+    private Set<String> friends;
+
     public Profile() {}
 
     public Profile(String userName) {
@@ -42,6 +44,10 @@ public class Profile {
         this.post = post;
     }
     
+    public void setFriends(Set<String> friends) {
+        this.friends = friends;
+    }
+    
     public String getUserName() {
         return userName;
     }
@@ -52,6 +58,10 @@ public class Profile {
     
     public int getFriendsCount() {
         return friendsCount;
+    }
+    
+    public Set<String> getFriends() {
+        return friends;
     }
     
     public String toString() {
