@@ -11,6 +11,7 @@ public class Constants {
     public final static String PASSWORD_FORMAT = "^[a-zA-Z0-9]{4,9}[@$&*]{1,}[0-9]{1,3}";
     public final static String PHONE_NUMBER_FORMAT = "(\\+91-)?[6-9][0-9]{9}";
     public final static String NAME_FORMAT = "[a-zA-Z\\s]{3,20}";   
+    public final static String USERNAME_FORMAT = "[a-zA-Z0-9@&$_]{3,10}";
 
     public final static int CREATE_ACCOUNT = 1;
     public final static int LOGIN = 2;
@@ -39,20 +40,28 @@ public class Constants {
     public final static int SHOW_PERSONAL_INFO = 1;
     public final static int UPDATE_PERSONAL_INFO = 2;
     public final static int DELETE_ACCOUNT = 3;
-    public final static int EXIT_SETTING = 4;
+    public final static int UPDATE_PASSWORD = 4;
+    public final static int VISIBILITY = 5;
+    public final static int EXIT_SETTING = 6;
 
     public final static int UPDATE_NAME = 1;
     public final static int UPDATE_EMAIL = 2;
     public final static int UPDATE_GENDER = 3;
     public final static int UPDATE_DOB = 4;
-    public final static int UPDATE_PHONENUMBER = 5;
-    public final static int UPDATE_PASSWORD = 6;
-    public final static int EXIT_UPDATE = 7;
+    public final static int UPDATE_PHONENUMBER = 5;    
+    public final static int EXIT_UPDATE = 6;
     
     public final static int SEARCH = 1;
     public final static int TO_GO_BACK = 2;
     
     public final static int ADD_FRIEND = 1;
     public final static int REMOVE_FRIEND = 2;
+    public final static int BACK = 3;
+    
+    public final static int PRIVATE = 1;  
+    
+    public final static int ACCEPT = 1;
+    public final static int REJECT = 2;
+    public final static int SKIP = 3;   
     
 }

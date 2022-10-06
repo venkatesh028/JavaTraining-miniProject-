@@ -19,7 +19,8 @@ public class FeedView {
     private SettingView settingView;
     private Scanner scanner;
     private SearchPage searchPage;
-
+    private NotificationView notificationView;
+    
     /**
      * Creates a new object for the FeedView and initialize the feilds
      * of that class
@@ -30,6 +31,7 @@ public class FeedView {
         this.scanner = new Scanner(System.in);
         this.profileView = new ProfileView();
         this.searchPage = new SearchPage();
+        this.notificationView = new NotificationView();
     }
     
     /**
@@ -67,8 +69,9 @@ public class FeedView {
             case Constants.SHOW_PROFILE:
                 profileView.displayProfilePage(userId);
                 break;
+
             case Constants.SHOW_NOTIFICATION:
-                
+                notificationView.showRequests(userId);
                 break;
 
             case Constants.SHOW_SEARCH:

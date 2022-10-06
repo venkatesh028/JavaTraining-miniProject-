@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import com.ideas2it.constant.Constants;
 import com.ideas2it.model.User;
 import com.ideas2it.controller.UserController;
+import com.ideas2it.controller.ProfileController;
 
 /**
  * Shows the setting page to the user
@@ -16,10 +17,12 @@ import com.ideas2it.controller.UserController;
  */
 public class SettingView {
     private UserController userController;
-    private Scanner scanner = new Scanner(System.in);
-
+    private Scanner scanner;
+    private ProfileController profileController;   
     public SettingView() {
         this.userController = new UserController();
+        this.scanner = new Scanner(System.in);
+        this.profileController = new ProfileController();
     }
      
     /**
@@ -79,7 +82,7 @@ public class SettingView {
 
                 while (!emailValid) {
                     System.out.print("Enter your emailId : ");
-                    email = scanner.next();
+                    email = scanner.nextLine();
 
                     if (userController.isValidEmail(email)) {
                         if (!userController.isEmailExist(email)) {
@@ -100,7 +103,7 @@ public class SettingView {
 
             case Constants.UPDATE_GENDER:
                 System.out.print("Enter Gender : ");
-                String gender = scanner.next();
+                String gender = scanner.nextLine();
                 user.setGender(gender);
                 break;
 
@@ -110,7 +113,7 @@ public class SettingView {
 
                 while (!isValidDateOfBirth) {
                     System.out.print("Enter the DateofBirth : ");
-                    dateOfBirth = scanner.next();
+                    dateOfBirth = scanner.nextLine();
                     int age;
                     if (userController.isValidDateOfBirth(dateOfBirth)) {
                         age = userController.calculateAge(LocalDate.parse(dateOfBirth));
@@ -132,7 +135,7 @@ public class SettingView {
                 boolean isValidNumber = false;
                 while (!isValidNumber) {
                     System.out.print("Enter Phone number : ");
-                    String phoneNumber = scanner.next();
+                    String phoneNumber = scanner.nextLine();
 
                     if (userController.isValidPhoneNumber(phoneNumber)) {  
                         user.setPhoneNumber(phoneNumber); 
@@ -166,13 +169,13 @@ public class SettingView {
         String newPassword;
         boolean isPasswordValid = false;
         System.out.println("Enter your old Password : ");
-        oldPassword = scanner.next();
+        oldPassword = scanner.nextLine();
         
         if (userController.isPasswordMatches(userId, oldPassword)) {
    
             while (!isPasswordValid) {
                 System.out.println("Enter the new password : ");
-                newPassword = scanner.next();     
+                newPassword = scanner.nextLine();     
             
                 if (userController.isValidPassword(newPassword)) {
                     user.setPassword(newPassword);
@@ -189,6 +192,26 @@ public class SettingView {
             System.out.println("Try to enter the correct Password ");
         }
         userController.update(userId, user);        
+    }
+    
+    /**
+     * Change the visbility of the profile from public to private and private to public
+     *
+     * @param userId  id of the user 
+     */
+    private void changeVisibility(String userId) {
+        StringBuilder visibilityMessage = new StringBuilder();
+        visibilityMessage.append(Constants.PRIVATE).append(" --> Private ");
+
+        System.out.print(visibilityMessage);
+        System.out.print("Selecte the visibility : ");
+        int type = getInput();  
+        
+        if (Constants.PRIVATE == type) {
+            profileController.changeVisibility(userId, true);
+        } else {
+            profileController.changeVisibility(userId, false);
+        }       
     }
     
     /**
@@ -213,6 +236,9 @@ public class SettingView {
                       .append(Constants.UPDATE_PASSWORD)
                       .append(" -->To Update password ")
                       .append("\nEnter ")
+                      .append(Constants.VISIBILITY)
+                      .append(" --> To change the profile visibility ")
+                      .append("\nEnter ")
                       .append(Constants.EXIT_SETTING)
                       .append(" -->To View Exit");
 
@@ -235,6 +261,10 @@ public class SettingView {
             case Constants.UPDATE_PASSWORD:
                 updatePassword(userId);
                 break;
+            case Constants.VISIBILITY:
+                changeVisibility(userId);
+                break;
+
             case Constants.EXIT_SETTING:
                 settingPage = false; 
                 break;

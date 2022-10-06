@@ -17,6 +17,7 @@ import com.ideas2it.model.Profile;
  * @version 1.0 22-SEP-2022
  * @author Venkatesh TM 
  */
+
 public class UserView {
     private UserController userController;
     private String userId;
@@ -110,8 +111,8 @@ public class UserView {
         while (isPageActive) {   
             boolean a = false;                     
             System.out.println(statement);
-            selectedOption = getInput();  
-          
+            selectedOption = getInput();      
+
             switch (selectedOption) {
             case Constants.CREATE_ACCOUNT:
                 createAccount();
@@ -142,8 +143,9 @@ public class UserView {
         String name = "";
  
         while(!isValid) {
-            System.out.print("Enter your Name : ");
+            System.out.print("\nEnter your Name : ");
             name = scanner.nextLine();
+            System.out.println(name);
             isValid = userController.isValidName(name);
         }
         return name;
@@ -161,7 +163,7 @@ public class UserView {
 
         while (!isValid) {
             System.out.print("Enter the DateofBirth in given format (yyyy-mm-dd) : ");
-            dateOfBirth = scanner.next();
+            dateOfBirth = scanner.nextLine();
             
             if (userController.isValidDateOfBirth(dateOfBirth)) {                
                 isValid= true;
@@ -184,7 +186,7 @@ public class UserView {
 
         while (!isValid) {
             System.out.print("Enter your emailId : ");
-            email = scanner.next();
+            email = scanner.nextLine();
 
             if (userController.isValidEmail(email)) {
                 if (!userController.isEmailExist(email)) {
@@ -211,7 +213,7 @@ public class UserView {
          
         while (!isValid) {
             System.out.print("Enter your password (a-ZA-Z0-9 and Special Character) : ");
-            password = scanner.next();
+            password = scanner.nextLine();
             
             if (userController.isValidPassword(password)) {
                 isValid = true;
@@ -237,12 +239,16 @@ public class UserView {
 
         while (!isValid) {
             System.out.print("UserName : ");
-            userName = scanner.next();
+            userName = scanner.nextLine();
             
-            if (!userController.isUserNameExist(userName)) {
-                isValid = true;    
+            if (userController.isValidUserName(userName)) {
+                if (!userController.isUserNameExist(userName)) {
+                    isValid = true;    
+                } else {
+                    System.out.println("UserName is already exist Enter a new one");
+                }
             } else {
-                System.out.println("UserName is already exist Enter a new one");                
+                System.out.println("Invalid username");                
             } 
         }  
         return userName;        

@@ -123,6 +123,11 @@ public class PostView {
         }
     }
 
+    /**
+     * Get the input from the user
+     *
+     * @return input input given by the user
+     */
     private int getInput() {
         Scanner scanner = new Scanner(System.in);
         int input;

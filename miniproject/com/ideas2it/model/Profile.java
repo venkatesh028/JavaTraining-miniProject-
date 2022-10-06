@@ -2,6 +2,7 @@ package com.ideas2it.model;
 
 import java.util.List;
 import java.util.Set;
+import java.util.HashSet;
 
 import com.ideas2it.model.Post;
 
@@ -19,7 +20,8 @@ public class Profile {
     private String bio;
     private int friendsCount;
     private List<Post> post; 
-    private Set<String> friends;
+    private Set<String> friends = new HashSet<>();
+    private boolean isPrivate= false;
 
     public Profile() {}
 
@@ -44,8 +46,12 @@ public class Profile {
         this.post = post;
     }
     
-    public void setFriends(Set<String> friends) {
-        this.friends = friends;
+    public void setFriend(String friendName) {
+        this.friends.add(friendName);
+    }
+    
+    public void setPrivate(boolean isPrivate) {
+        this.isPrivate = isPrivate;
     }
     
     public String getUserName() {
@@ -64,12 +70,16 @@ public class Profile {
         return friends;
     }
     
+    public boolean getIsPrivate() {
+        return isPrivate;
+    }
+    
     public String toString() {
         StringBuilder profileMessage = new StringBuilder();
         profileMessage.append("\nUserName : ").append(userName)
                    .append("\nBio      : ").append(bio)
-                   .append("\nFriends  : ").append(friendsCount);
-
+                   .append("\nFriends  : ").append(friendsCount)
+                   .append("\nFriendsList : ").append(friends);
         return profileMessage.toString();
     }
 }  

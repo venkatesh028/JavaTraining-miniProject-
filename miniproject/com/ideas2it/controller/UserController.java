@@ -152,6 +152,12 @@ public class UserController {
         return userService.updateLoginCredentials(oldEmail, newEmail);
     }
     
+    /** 
+     * Check the given dateOfBith matches to the given format 
+     * 
+     * @param  dateOfBirth dateOfBirth need to be validated 
+     * @return boolean     true if the given data matches the format else false
+     */
     public boolean isValidDateOfBirth(String dateOfBirth) {
         try {
             validationUtil.isValidDateOfBirth(dateOfBirth);
@@ -159,23 +165,67 @@ public class UserController {
             return false;
         }
         return true;
-
     }
     
+    /**
+     * Check the given phoneNumber matches the given format
+     *
+     * @param phoneNumber phone number given by the user 
+     * @return boolean    true if the given data matches the format else false
+     */
     public boolean isValidPhoneNumber(String phoneNumber) {
         return validationUtil.isValidPhoneNumber(phoneNumber);
     }
+
+    /**
+     * Check the given userName matches the given format
+     *
+     * @param  userName  username given by the user
+     * @return boolean   true if the given data matches the format else false
+     */
+    public boolean isValidUserName(String userName) {
+        return validationUtil.isValidUserName(userName);
+    }
     
+    /**
+     * Check the entered password is correct
+     * 
+     * @param  userId       userId of the user
+     * @param  oldPassword  password of the user 
+     * @return boolean      true or false based on the result
+     */
     public boolean isPasswordMatches(String userId, String oldPassword) {
         return userService.isPasswordMatches(userId, oldPassword);
     }
 
+    /**
+     * Calculate the age based on the dateOfBirth given by the user
+     *
+     * @param  dateOfBirth dateOfBirth given by the user
+     * @return age         age based on the dateOfBirth
+     */
     public int calculateAge(LocalDate dateOfBirth) {
         return userService.calculateAge(dateOfBirth);
-    }
+    }   
     
+    /**
+     * Check the given name matches the given format
+     *
+     * @param  name    name given by the user 
+     * @return boolean true if the given data matches the format else false
+     */
     public boolean isValidName(String name) {
         return validationUtil.isValidName(name);
+    }
+    
+    /**
+     * Get the userId based on the username
+     * 
+     * @param  userName username of the user
+     * @return userId   id of the user based on the userName
+     */
+    public String getUserIdByUserName(String userName) {
+        return userService.getUserIdByUserName(userName);
     }
   
 }

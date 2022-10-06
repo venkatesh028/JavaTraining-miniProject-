@@ -72,4 +72,31 @@ public class ProfileService {
         return userService.getUserProfile(userName);    
     }
     
+    /**
+     * Chagne the visibility of the user from the public or private 
+     * Based on the user request
+     *
+     * @param  userId  userId of the particular user
+     * @param  boolean true or false based on the user selection
+     * @return boolean true after changing the visibility
+     */
+    public boolean changeVisibility(String userId, boolean isPrivate) {
+        profile = userService.getProfile(userId);
+        profile.setPrivate(isPrivate);
+        return true;
+    }
+    
+    /**
+     * Add friend name to the particular user 
+     * 
+     * @param  userId     userId of the user to who the name going to get add
+     * @parma  friendName requested user name 
+     * @return boolean    true after adding the name
+     */
+    public boolean addFriend(String userId, String friendName) {
+        profile = userService.getProfile(userId);
+        profile.setFriend(friendName);
+        return true;
+    }
+    
 }

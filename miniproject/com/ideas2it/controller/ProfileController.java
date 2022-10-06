@@ -68,5 +68,25 @@ public class ProfileController {
     public Profile getUserProfile(String userName) {
         return profileService.getUserProfile(userName);
     }
+   
+    /**
+     * Changes the visibility of the profile 
+     * 
+     * @param userId userid of the user 
+     * @param boolen true or based on the user request
+     */
+    public boolean changeVisibility(String userId, boolean isPrivate) {
+        return profileService.changeVisibility(userId, isPrivate);
+    }
+    
+    /**
+     * Add friend name to the user based on the userId
+     * 
+     * @param userId     userId of the user
+     * @param friendName username need to be added
+     */ 
+    public boolean addFriend(String userId, String friendName) {
+        return profileService.addFriend(userId, friendName);     
+    }
        
 } 

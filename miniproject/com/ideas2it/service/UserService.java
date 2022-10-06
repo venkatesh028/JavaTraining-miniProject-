@@ -169,6 +169,13 @@ public class UserService {
         return userDao.getUserName(userId);
     }
     
+    /**
+     * Check the entered password is correct
+     * 
+     * @param  userId       userId of the user
+     * @param  oldPassword  password of the user 
+     * @return boolean      true or false based on the result
+     */
     public boolean isPasswordMatches(String userId, String oldPassword) {
         Map<String, User> users; 
         User user;
@@ -177,6 +184,12 @@ public class UserService {
         return user.getPassword().equals(oldPassword);
     }
     
+    /**
+     * Calculate the age based on the dateOfBirth given by the user
+     *
+     * @param  dateOfBirth dateOfBirth given by the user
+     * @return age         age based on the dateOfBirth
+     */
     public int calculateAge(LocalDate dateOfBirth) {        
         LocalDate currentDate = LocalDate.now();
         Period age;
@@ -184,6 +197,12 @@ public class UserService {
         return age.getYears();    
     }
     
+    /**
+     * Get the userProfile based on the uesrName 
+     * 
+     * @param  userName userName of the user
+     * @return profile  profile of the user based on the username 
+     */
     public Profile getUserProfile(String userName) {
         Map<String, User> users = userDao.getUsers();
         Profile profile = null;
@@ -195,6 +214,25 @@ public class UserService {
             }
         }
         return profile;        
+    }
+
+    /**
+     * Get the userId based on the uesrName 
+     * 
+     * @param  userName userName of the user
+     * @return userId   userid of the user based on the username 
+     */    
+    public String getUserIdByUserName(String userName) {
+        Map<String, User> users = userDao.getUsers();
+        String userId = "";
+
+        for (User user : users.values()) {
+            if (user.getProfile().getUserName().equals(userName)) {
+                 userId = user.getUserId();
+                break;
+            }
+        }
+        return userId;        
     }
   
 }

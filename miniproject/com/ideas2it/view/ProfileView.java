@@ -56,7 +56,7 @@ public class ProfileView {
 
                 while (!userNameValid) {
                     System.out.print("Enter the UserName : ");
-                    newUserName = scanner.next();
+                    newUserName = scanner.nextLine();
                     
                     if (!userController.isUserNameExist(newUserName)) {
                         profileController.updateUserName(userId, newUserName);
@@ -152,7 +152,7 @@ public class ProfileView {
             case Constants.DELETE_POST:
                 deletePost();
                 break;
-           
+            
             case Constants.EXIT_PROFILEPAGE:
                 profilePage = false;
                 break;
@@ -162,7 +162,12 @@ public class ProfileView {
             }
         }  
     }
-
+    
+    /**
+     * Get the input from the user
+     *
+     * @return input input given by the user
+     */
     private int getInput() {
         Scanner scanner = new Scanner(System.in);
         int input;
