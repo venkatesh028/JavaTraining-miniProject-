@@ -26,8 +26,8 @@ public class NotificationService {
      * @param userName      userName of the user for who the request is given
      * @param requestedUser the user who gave the request
      */     
-    public boolean addNotifications(String userName, Notification notification) {
-        return notificationDao.addNotifications(userName, notification);
+    public boolean addNotification(String userName, Notification notification) {
+        return notificationDao.addNotification(userName, notification);
     }
     
     /**

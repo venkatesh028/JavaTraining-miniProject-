@@ -10,8 +10,7 @@ import com.ideas2it.model.Notification;
  * @version 1.0 05-OCT-2022
  * @author  Venkatesh TM
  */
-public class NotificationController {
-    
+public class NotificationController {    
     private NotificationService notificationService;
     
     public NotificationController() {
@@ -24,8 +23,8 @@ public class NotificationController {
      * @param userName      userName of the user for who the request is given
      * @param requestedUser the user who gave the request
      */ 
-    public boolean addNotifications(String userName, Notification notification) {
-        return notificationService.addNotifications(userName, notification);    
+    public boolean addNotification(String userName, Notification notification) {         
+        return notificationService.addNotification(userName, notification);    
     } 
     
     /**

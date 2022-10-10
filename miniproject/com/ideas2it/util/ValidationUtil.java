@@ -40,6 +40,7 @@ public class ValidationUtil {
      */
     public boolean isValidDateOfBirth(String dateOfBirth) throws DateTimeParseException {
         LocalDate dob = LocalDate.parse(dateOfBirth);
+
         if (dob.toString().equals(dateOfBirth)) {
             return true;
         }

@@ -19,7 +19,7 @@ public class NotificationDaoImpl implements NotificationDao  {
      * {@inheritDoc}
      */
     @Override
-    public boolean addNotifications(String userName, Notification notification) {
+    public boolean addNotification(String userName, Notification notification) {
         Set<Notification> notifications; 
 
         if (userNotifications.containsKey(userName)) {

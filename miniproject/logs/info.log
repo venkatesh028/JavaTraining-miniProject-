@@ -1,0 +1,5 @@
+2022-10-10 12:58:16,389 INFO c.i.v.UserView [main] you entered wrong choice 
+2022-10-10 15:21:47,145 INFO c.i.v.UserView [main] You are not elibile to create a account
+2022-10-10 15:35:32,863 INFO c.i.v.UserView [main] Invalid email format
+2022-10-10 15:36:25,157 INFO c.i.v.UserView [main] Invalid date format
+2022-10-10 16:33:46,747 INFO c.i.v.SearchPage [main] There is no account with this username 

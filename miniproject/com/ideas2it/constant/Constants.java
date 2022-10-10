@@ -44,12 +44,11 @@ public class Constants {
     public final static int VISIBILITY = 5;
     public final static int EXIT_SETTING = 6;
 
-    public final static int UPDATE_NAME = 1;
-    public final static int UPDATE_EMAIL = 2;
-    public final static int UPDATE_GENDER = 3;
-    public final static int UPDATE_DOB = 4;
-    public final static int UPDATE_PHONENUMBER = 5;    
-    public final static int EXIT_UPDATE = 6;
+    public final static int UPDATE_EMAIL = 1;
+    public final static int UPDATE_GENDER = 2;
+    public final static int UPDATE_DOB = 3;
+    public final static int UPDATE_PHONENUMBER = 4;    
+    public final static int EXIT_UPDATE = 5;
     
     public final static int SEARCH = 1;
     public final static int TO_GO_BACK = 2;
@@ -62,6 +61,5 @@ public class Constants {
     
     public final static int ACCEPT = 1;
     public final static int REJECT = 2;
-    public final static int SKIP = 3;   
-    
+    public final static int SKIP = 3;     
 }

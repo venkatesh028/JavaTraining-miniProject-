@@ -19,7 +19,7 @@ public interface NotificationDao {
      * @param  requestedUser name of the user who gave the request
      * @return boolean       true after adding the request
      */     
-    public boolean addNotifications(String userName, Notification notification);
+    public boolean addNotification(String userName, Notification notification);
     
     /**
      * Get the requests given to the user based on the userName

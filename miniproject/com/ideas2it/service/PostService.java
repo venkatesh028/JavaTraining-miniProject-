@@ -68,8 +68,7 @@ public class PostService {
                     post.getLikedUsers().add(likedUserName);
                 }
             }              
-        }
-        
+        }        
         return postDao.updatePost(userPost);
     }
     
@@ -85,7 +84,6 @@ public class PostService {
         userPost = postDao.getUserPost();
 
         for (Post post : userPost) {
-
             if (post.getPostId().equals(postId)) {
                 post.setComment(comment);
                 break;
@@ -103,6 +101,7 @@ public class PostService {
         StringBuilder postMessage = new StringBuilder();
         List<Post> userPost;
         userPost = postDao.getUserPost();
+
         for (Post post : userPost) {
             postMessage.append("\n").append(post);
         }
@@ -120,6 +119,7 @@ public class PostService {
         userPost = postDao.getUserPost();
         StringBuilder postByUserName = new StringBuilder();
         Post post;
+
         for (int index = 0; index < userPost.size(); index++) {
             post = userPost.get(index);
             if (post.getPostedBy().equals(userName)) {

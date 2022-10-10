@@ -7,6 +7,7 @@ import com.ideas2it.controller.ProfileController;
 import com.ideas2it.controller.PostController;
 import com.ideas2it.controller.UserController;
 import com.ideas2it.constant.Constants;
+import com.ideas2it.logger.CustomLogger;
 
 /**
  * Shows the profile page to the user based on the user action
@@ -16,17 +17,18 @@ import com.ideas2it.constant.Constants;
  * @author Venkatesh TM
  */
 public class ProfileView {
-
-    ProfileController profileController;
-    PostController postController;
-    UserController userController;
-    Scanner scanner;
+    private ProfileController profileController;
+    private PostController postController;
+    private UserController userController;
+    private Scanner scanner;  
+    private CustomLogger logger;                                  
      
     public ProfileView() {
         this.profileController = new ProfileController();
         this.postController = new PostController();
         this.userController = new UserController();
         this.scanner = new Scanner(System.in);
+        this.logger = new CustomLogger(ProfileView.class);
     }
     
     /**
@@ -35,26 +37,20 @@ public class ProfileView {
      * @param userId
      */
     private void updateProfile(String userId) {
-        StringBuilder updateMessage = new StringBuilder();
         int selectedUpdate;
         boolean updatePage = true;
-        updateMessage.append("\nEnter ").append(Constants.UPDATE_USERNAME)
-               .append(" --> To update username ").append("\nEnter ")
-               .append(Constants.UPDATE_BIO)
-               .append(" --> To update Bio ").append("\nEnter ")
-               .append(Constants.EXIT_UPDATEPAGE)
-               .append(" --> To exit ");
+        String updateMenu = generateProfileUpdateMenu();
 
         while (updatePage) {
-            System.out.print(updateMessage);
-            selectedUpdate = getInput();         
+            System.out.print(updateMenu);
+            selectedUpdate = getOption();         
        
             switch (selectedUpdate) {            
             case Constants.UPDATE_USERNAME:
                 String newUserName;
                 boolean userNameValid = false;
 
-                while (!userNameValid) {
+                while (!userNameValid) {                                     
                     System.out.print("Enter the UserName : ");
                     newUserName = scanner.nextLine();
                     
@@ -62,14 +58,13 @@ public class ProfileView {
                         profileController.updateUserName(userId, newUserName);
                         userNameValid = true;
                     } else {  
-                        System.out.println("UserName is already exist Enter a new one");
+                        logger.info("UserName is already exist Enter a new one");
                     }
                 }                
                 break;
             
             case Constants.UPDATE_BIO:
                 System.out.print("Enter your Bio :");
-                scanner.nextLine();
                 String bio = scanner.nextLine();
                 profileController.updateBio(userId, bio);            
                 break;
@@ -118,10 +113,9 @@ public class ProfileView {
         if (postController.deletePost(postId)) {
             System.out.println("Post Deleted ..");
         } else {
-            System.out.println("Something went wrong..");
+            logger.info("Something went wrong..");
         }
     }
-   
 
     /**
      * Shows the profilepage of the user
@@ -131,18 +125,13 @@ public class ProfileView {
     public void displayProfilePage(String userId) {
         int selectedOption; 
         boolean profilePage = true;
-        StringBuilder profileMessage = new StringBuilder();
-        profileMessage.append("\nEnter ").append(Constants.UPDATE_PROFILE)
-                      .append(" --> To update Profile").append("\nEnter ")
-                      .append(Constants.DELETE_POST).append("--> To delete the post ")
-                      .append("\nEnter ").append(Constants.EXIT_PROFILEPAGE)
-                      .append(" --> To Exit");               
+        String profileMenu = generateProfileMenu();               
 
         while (profilePage) {   
             showProfile(userId); 
             showPostByUserName(userId);
-            System.out.println(profileMessage);
-            selectedOption = getInput();
+            System.out.println(profileMenu);
+            selectedOption = getOption();
 
             switch (selectedOption) { 
             case Constants.UPDATE_PROFILE:
@@ -158,7 +147,7 @@ public class ProfileView {
                 break;
 
             default:
-                System.out.println("You entered wrong option");
+                logger.info("You entered wrong option");
             }
         }  
     }
@@ -168,17 +157,51 @@ public class ProfileView {
      *
      * @return input input given by the user
      */
-    private int getInput() {
+    private int getOption() {
         Scanner scanner = new Scanner(System.in);
-        int input;
-        try{
-            input = scanner.nextInt();
-        } catch(InputMismatchException e) {
-            System.out.println("Enter Only Number not String ");
-            return 0;
-        }
-        return input; 
-    }
+        int option = 0;
 
-} 
+        try {
+            option = scanner.nextInt();
+        } catch(InputMismatchException e) {
+            logger.error("Enter Only Number not String\n");
+            return option;
+        }
+        return option; 
+    }
     
+    /**
+     * Generates the profile menu
+     * 
+     * @return profileMenu - profile menu it shows the description about the options
+     */
+    private String generateProfileMenu() {
+        StringBuilder profileMenu = new StringBuilder();
+
+        profileMenu.append("\nEnter ").append(Constants.UPDATE_PROFILE)
+                   .append(" --> To update Profile").append("\nEnter ")
+                   .append(Constants.DELETE_POST).append("--> To delete the post ")    
+                   .append("\nEnter ").append(Constants.EXIT_PROFILEPAGE)
+                   .append(" --> To Exit");
+
+        return profileMenu.toString();
+    }
+    
+    /**
+     * Generates the profile update menu
+     *
+     * @return updateMenu - update menu it shows the description about the update options
+     */
+    private String generateProfileUpdateMenu() {
+        StringBuilder updateMenu = new StringBuilder();
+
+        updateMenu.append("\nEnter ").append(Constants.UPDATE_USERNAME)
+                  .append(" --> To update username ").append("\nEnter ")
+                  .append(Constants.UPDATE_BIO)
+                  .append(" --> To update Bio ").append("\nEnter ")              
+                  .append(Constants.EXIT_UPDATEPAGE)
+                  .append(" --> To exit ");
+
+        return updateMenu.toString();    
+    }
+} 

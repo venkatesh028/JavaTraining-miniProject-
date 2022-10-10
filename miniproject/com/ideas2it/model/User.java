@@ -15,7 +15,6 @@ import com.ideas2it.model.Profile;
  */
 public class User {
     private String userId;
-    private String name;
     private String email;
     private String password;
     private String gender;
@@ -26,19 +25,14 @@ public class User {
     
     public User() {}
 
-    public User(String userId, String name, String email, String password) {
+    public User(String userId, String email, String password) {
         this.userId = userId;
-        this.name = name;
         this.email = email;
         this.password = password;
     }
     
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
     }
    
     public void setEmail(String email) {
@@ -73,10 +67,6 @@ public class User {
         return userId;
     }
     
-    public String getName() {
-        return name;
-    }
-    
     public String getEmail() {
         return email;
     }
@@ -103,8 +93,7 @@ public class User {
     
     public String toString() {
         StringBuilder userMessage = new StringBuilder();
-        userMessage.append("\nName    : ").append(name)
-                   .append("\nEmail   : ").append(email)
+        userMessage.append("\nEmail   : ").append(email)
                    .append("\nGender  : ").append(gender)
                    .append("\nDOB     : ").append(dateOfBirth)
                    .append("\nAge     : ").append(age)

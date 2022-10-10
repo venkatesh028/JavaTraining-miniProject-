@@ -10,7 +10,6 @@ import com.ideas2it.model.Profile;
  * @author  Venkatesh TM
  */
 public class ProfileController {
-    
     ProfileService profileService;
 
     public ProfileController() {
@@ -88,5 +87,4 @@ public class ProfileController {
     public boolean addFriend(String userId, String friendName) {
         return profileService.addFriend(userId, friendName);     
     }
-       
 } 

@@ -11,7 +11,7 @@ import com.ideas2it.controller.NotificationController;
 import com.ideas2it.constant.Constants;
 import com.ideas2it.controller.NotificationController;
 import com.ideas2it.model.Notification;
-
+import com.ideas2it.logger.CustomLogger;
 
 /**
  * Notification view shows the friend request received from the different users
@@ -24,11 +24,13 @@ public class NotificationView {
     private ProfileController profileController;
     private NotificationController notificationController;
     private UserController userController;
+    private CustomLogger logger;
 
     public NotificationView () {
         this.profileController = new ProfileController();
         this.notificationController = new NotificationController();
         this.userController = new UserController();
+        this.logger = new CustomLogger(NotificationView.class);
     }
     
     /**
@@ -39,8 +41,7 @@ public class NotificationView {
     public void showRequests(String userId) {
         int selectedOption;
         String userName;
-        String requestedUserId = "";
-        
+        String requestedUserId = "";        
         userName = profileController.getUserName(userId);
         Set<Notification> notifications = notificationController.getNotifications(userName); 
 
@@ -51,28 +52,31 @@ public class NotificationView {
                            .append(" --> To reject the request ")
                            .append("\nEnter ").append(Constants.SKIP)
                            .append( " --> To skip now ");     
-        
-        for (Notification notification : notifications) {
-            System.out.println(notification);
 
-            System.out.print(notificationMessage);
-            selectedOption = getInput();
+        if (notifications != null) {                                        
+            for (Notification notification : notifications) {
+                System.out.println(notification);
+                System.out.print(notificationMessage);
+                selectedOption = getInput();
 
-            switch(selectedOption) {
-            case Constants.ACCEPT:
-                requestedUserId = userController.getUserIdByUserName(notification.getUserName());
-                profileController.addFriend(userId, notification.getUserName());
-                profileController.addFriend(requestedUserId, userName);
-                notificationController.clearNotification(userName, notification.getUserName());
-                break;
+                switch (selectedOption) {
+                case Constants.ACCEPT:
+                    requestedUserId = userController.getUserIdByUserName(notification.getUserName());
+                    profileController.addFriend(userId, notification.getUserName());
+                    profileController.addFriend(requestedUserId, userName);
+                    notificationController.clearNotification(userName, notification.getUserName());
+                    break;
 
-            case Constants.REJECT:
-                break;
+                case Constants.REJECT:
+                    notificationController.clearNotification(userName, notification.getUserName());
+                    break;
 
-            case Constants.SKIP:
-                break;
-
+                case Constants.SKIP:
+                    break;
+                }
             }
+        } else {
+            logger.info("There is no notofication\n");
         }    
     }
 
@@ -83,12 +87,13 @@ public class NotificationView {
      */
     private int getInput() {
         Scanner scanner = new Scanner(System.in);
-        int input;
-        try{
+        int input = 0 ;
+
+        try {
             input = scanner.nextInt();
         } catch(InputMismatchException e) {
-            System.out.println("Enter Only Number not String ");
-            return 0;
+            logger.error("Enter Only Number not String\n");
+            return input;
         }
         return input; 
     }  

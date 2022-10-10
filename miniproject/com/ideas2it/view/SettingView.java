@@ -5,9 +5,10 @@ import java.util.InputMismatchException;
 import java.time.LocalDate;
 
 import com.ideas2it.constant.Constants;
-import com.ideas2it.model.User;
 import com.ideas2it.controller.UserController;
 import com.ideas2it.controller.ProfileController;
+import com.ideas2it.logger.CustomLogger;
+import com.ideas2it.model.User;
 
 /**
  * Shows the setting page to the user
@@ -18,17 +19,20 @@ import com.ideas2it.controller.ProfileController;
 public class SettingView {
     private UserController userController;
     private Scanner scanner;
-    private ProfileController profileController;   
+    private ProfileController profileController;  
+    private CustomLogger logger;
+
     public SettingView() {
         this.userController = new UserController();
         this.scanner = new Scanner(System.in);
         this.profileController = new ProfileController();
+        this.logger = new CustomLogger(SettingView.class);
     }
      
     /**
      * Delete the account of the user 
      *
-     * @param userId userId of the user
+     * @param userId - userId of the user
      */
     private void deleteAccount(String userId) {
         userController.delete(userId);
@@ -37,7 +41,7 @@ public class SettingView {
     /**
      * Shows the personal information of the user
      * 
-     * @param userId userId of the user
+     * @param userId - userId of the user
      */
     private void showPersonalInfo(String userId) {
         System.out.println(userController.showPersonalInfo(userId));            
@@ -46,41 +50,24 @@ public class SettingView {
     /**
      * Shows the option to update the personal information of the user
      *
-     * @userId userId of the user
+     * @param userId - userId of the user
      */
-    private void updatePersonalInfo(String userId) {
-        StringBuilder updateMessage = new StringBuilder();
+    private void updatePersonalInfo(String userId) {        
         int selectedOption;
         boolean update = true;
         User user = userController.getById(userId);
-
-        updateMessage.append("\nEnter ").append(Constants.UPDATE_NAME)
-                     .append(" --> To update Name ").append("\nEnter ")
-                     .append(Constants.UPDATE_EMAIL)
-                     .append(" --> To update email").append("\nEnter ")
-                     .append(Constants.UPDATE_GENDER)
-                     .append(" --> To update gender ").append("\nEnter ")
-                     .append(Constants.UPDATE_DOB)
-                     .append(" --> To update DOB ").append("\nEnter ")
-                     .append(Constants.UPDATE_PHONENUMBER)
-                     .append(" --> To update Phonenumber ").append("\nEnter")
-                     .append(Constants.EXIT_UPDATE)
-                     .append(" --> To exit ");
+        String updateMenu = generateUpdateMenu();
         
         while(update) {
-            System.out.println(updateMessage);
-            selectedOption = getInput();
+            System.out.println(updateMenu);
+            selectedOption = getOption();
 
             switch (selectedOption) {
-            case Constants.UPDATE_NAME:
-                user.setName(getName());
-                break;
-
             case Constants.UPDATE_EMAIL:
-                boolean emailValid = false;
+                boolean isValid = false;
                 String email;
 
-                while (!emailValid) {
+                while (!isValid) {
                     System.out.print("Enter your emailId : ");
                     email = scanner.nextLine();
 
@@ -88,15 +75,15 @@ public class SettingView {
                         if (!userController.isEmailExist(email)) {
                             if (userController.updateLoginCredentials(user.getEmail(), email) == null) {
                                 user.setEmail(email);
-                                emailValid = true;
+                                isValid = true;
                             } else {
-                                System.out.print("Something went wrong not updated ");
+                                logger.warn("Something went wrong not updated ");
                             }
                         } else {
-                            System.out.println("Email Already exist");
+                            logger.warn("Email Already exist");
                         }                
                     } else {
-                        System.out.println("Invalid email format");     
+                        logger.warn("Invalid email format");     
                     }  
                 }
                 break;
@@ -115,24 +102,26 @@ public class SettingView {
                     System.out.print("Enter the DateofBirth : ");
                     dateOfBirth = scanner.nextLine();
                     int age;
+
                     if (userController.isValidDateOfBirth(dateOfBirth)) {
                         age = userController.calculateAge(LocalDate.parse(dateOfBirth));
+
                         if (age>=18){
                             user.setDateOfBirth(LocalDate.parse(dateOfBirth));
                             user.setAge(age);
                             isValidDateOfBirth = true;
                         } else {
-                            System.out.println("Not eligible to have a account");
+                            logger.warn("Not eligible to have a account\n");
                         }
                     } else {
-                        System.out.println("Invalid date."
-                                           +"\nEnter in given format (yyyy-mm-dd)");
+                        logger.warn("Invalid date. \nEnter in given format (yyyy-mm-dd)\n");
                     }
                 }   
                 break;
 
             case Constants.UPDATE_PHONENUMBER:
                 boolean isValidNumber = false;
+
                 while (!isValidNumber) {
                     System.out.print("Enter Phone number : ");
                     String phoneNumber = scanner.nextLine();
@@ -141,7 +130,7 @@ public class SettingView {
                         user.setPhoneNumber(phoneNumber); 
                         isValidNumber = true;
                     } else {
-                        System.out.println("Enter in valid foramt (+91-6...)");
+                        logger.info("Enter in format (+91-6...)");
                     }
                 }                
                 break;
@@ -161,7 +150,7 @@ public class SettingView {
      * Update the password of the user by getting new password 
      * from the user
      * 
-     * @param userId id of the user
+     * @param userId - userId id of the user
      */
     private void updatePassword(String userId) {
         User user = userController.getById(userId);
@@ -172,7 +161,6 @@ public class SettingView {
         oldPassword = scanner.nextLine();
         
         if (userController.isPasswordMatches(userId, oldPassword)) {
-   
             while (!isPasswordValid) {
                 System.out.println("Enter the new password : ");
                 newPassword = scanner.nextLine();     
@@ -181,15 +169,11 @@ public class SettingView {
                     user.setPassword(newPassword);
                     isPasswordValid = true;
                 } else { 
-                    System.out.println("Invalid your password must"
-                                         + " contain (a-ZA-Z0-9) "
-                                         + " and Any Special Character "
-                                         + "range must be 8-20");   
+                    logger.info("Invalid your password must contain (a-ZA-Z0-9) and Any Special Character within 8-20\n");  
                 }            
-            } 
-
+            }
         } else {
-            System.out.println("Try to enter the correct Password ");
+            logger.info("Try to enter the correct Password\n");
         }
         userController.update(userId, user);        
     }
@@ -205,13 +189,13 @@ public class SettingView {
 
         System.out.print(visibilityMessage);
         System.out.print("Selecte the visibility : ");
-        int type = getInput();  
+        int type = getOption();  
         
         if (Constants.PRIVATE == type) {
             profileController.changeVisibility(userId, true);
         } else {
             profileController.changeVisibility(userId, false);
-        }       
+        }   
     }
     
     /**
@@ -222,29 +206,12 @@ public class SettingView {
     public void displaySettingPage(String userId) {
         int selectedOption;
         boolean settingPage = true;
-        StringBuilder settingMessage = new StringBuilder();
-        settingMessage.append("\nEnter ")
-                      .append(Constants.SHOW_PERSONAL_INFO)
-                      .append(" -->To View Personal Info ")
-                      .append("\nEnter ")
-                      .append(Constants.UPDATE_PERSONAL_INFO)
-                      .append(" -->To update Personal Info ")
-                      .append("\nEnter ")
-                      .append(Constants.DELETE_ACCOUNT)
-                      .append(" -->To Delete Account ")
-                      .append("\nEnter ")
-                      .append(Constants.UPDATE_PASSWORD)
-                      .append(" -->To Update password ")
-                      .append("\nEnter ")
-                      .append(Constants.VISIBILITY)
-                      .append(" --> To change the profile visibility ")
-                      .append("\nEnter ")
-                      .append(Constants.EXIT_SETTING)
-                      .append(" -->To View Exit");
+        String settingMenu = generateSettingMenu();
+
 
         while (settingPage) {
-            System.out.print(settingMessage);
-            selectedOption = getInput();
+            System.out.print(settingMenu);
+            selectedOption = getOption();
             
             switch (selectedOption) {
             case Constants.SHOW_PERSONAL_INFO:
@@ -258,9 +225,11 @@ public class SettingView {
             case Constants.DELETE_ACCOUNT:
                 deleteAccount(userId);
                 break;
+
             case Constants.UPDATE_PASSWORD:
                 updatePassword(userId);
                 break;
+
             case Constants.VISIBILITY:
                 changeVisibility(userId);
                 break;
@@ -269,41 +238,76 @@ public class SettingView {
                 settingPage = false; 
                 break;
             }
-            
         }
     }  
      
     /**
-     * Getting the input from the user 
+     * Gets the input from the user 
      *
      * @return input input given the user 
      */
-    private int getInput() {
+    private int getOption() {
         Scanner scanner = new Scanner(System.in);
-        int input;
-        try{
-            input = scanner.nextInt();
+        int option = 0;
+
+        try {
+            option = scanner.nextInt();
         } catch(InputMismatchException e) {
-            System.out.println("Enter Only Number not String ");
-            return 0;
+            logger.error("Enter Only Number not String\n");
+            return option;
         }
-        return input; 
+        return option; 
     }
     
     /**
-     * Get the name from the user
-     *
-     * @return name  name of the user 
+     * Generates the update menu 
+     * 
+     * @return updateMenu - update menu have all the update options description 
      */
-    private String getName() {
-        boolean isValid = false;
-        String name = "";
- 
-        while(!isValid) {
-            System.out.print("Enter your Name : ");
-            name = scanner.nextLine();
-            isValid = userController.isValidName(name);
-        }
-        return name;
+    private String generateUpdateMenu() {
+        StringBuilder updateMenu = new StringBuilder();
+
+        updateMenu.append("\nEnter ")
+                  .append(Constants.UPDATE_EMAIL)
+                  .append(" --> To update email").append("\nEnter ")   
+                  .append(Constants.UPDATE_GENDER)
+                  .append(" --> To update gender ").append("\nEnter ")
+                  .append(Constants.UPDATE_DOB)
+                  .append(" --> To update DOB ").append("\nEnter ")
+                  .append(Constants.UPDATE_PHONENUMBER)
+                  .append(" --> To update Phonenumber ").append("\nEnter")
+                  .append(Constants.EXIT_UPDATE)
+                  .append(" --> To exit ");
+
+        return updateMenu.toString();
+    }
+    
+    /**
+     * Generates the setting menu to show
+     *
+     * @return settingMenu - Setting menu have all the setting options description
+     */
+    private String generateSettingMenu() {
+        StringBuilder settingMenu = new StringBuilder(); 
+       
+        settingMenu.append("\nEnter ")
+                   .append(Constants.SHOW_PERSONAL_INFO)
+                   .append(" -->To View Personal Info ")
+                   .append("\nEnter ")
+                   .append(Constants.UPDATE_PERSONAL_INFO)
+                   .append(" -->To update Personal Info ")
+                   .append("\nEnter ")                                       
+                   .append(Constants.DELETE_ACCOUNT)
+                   .append(" -->To Delete Account ")
+                   .append("\nEnter ")
+                   .append(Constants.UPDATE_PASSWORD)
+                   .append(" -->To Update password ")
+                   .append("\nEnter ")
+                   .append(Constants.VISIBILITY)
+                   .append(" --> To change the profile visibility ")
+                   .append("\nEnter ")
+                   .append(Constants.EXIT_SETTING)
+                   .append(" -->To View Exit");
+        return settingMenu.toString();
     }
 }

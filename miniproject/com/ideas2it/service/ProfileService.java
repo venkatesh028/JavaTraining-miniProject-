@@ -97,6 +97,5 @@ public class ProfileService {
         profile = userService.getProfile(userId);
         profile.setFriend(friendName);
         return true;
-    }
-    
+    }    
 }

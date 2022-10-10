@@ -7,6 +7,7 @@ import java.time.LocalDate;
 
 import com.ideas2it.controller.UserController;
 import com.ideas2it.constant.Constants;
+import com.ideas2it.logger.CustomLogger;
 import com.ideas2it.model.User;
 import com.ideas2it.model.Profile;
 
@@ -15,19 +16,20 @@ import com.ideas2it.model.Profile;
  * it takes to the further pages
  *
  * @version 1.0 22-SEP-2022
- * @author Venkatesh TM 
+ * @author  Venkatesh TM 
  */
-
 public class UserView {
     private UserController userController;
     private String userId;
     private FeedView feedView;
-    private Scanner scanner;
+    private Scanner scanner; 
+    private CustomLogger logger;
 
     public UserView() {
         this.userController = new UserController();
         this.scanner = new Scanner(System.in);
         this.feedView = new FeedView();
+        this.logger = new CustomLogger(UserView.class);
     }
 
     /** 
@@ -51,10 +53,10 @@ public class UserView {
                     feedView.showNewsFeed(userController.getUserId(email));
                     isAccountExist = true;
                 } else {
-                    System.out.println("Invalid password try again ");
+                    logger.info("Invalid password try again");
                 }                   
             } else {
-                System.out.println("There is no account with this mailID ");
+                logger.info("There is no account with this mailID ");
                 isAccountExist = true;
             }
         } 
@@ -69,15 +71,14 @@ public class UserView {
         User user = new User();
         Profile profile = new Profile();
         int age;
-        
-        user.setName(getName());   
+
+        user.setEmail(getEmail());  
+        user.setPassword(getPassword());
         user.setDateOfBirth(getDateOfBirth());          
         age = userController.calculateAge(user.getDateOfBirth());
 
         if (age>=18) {
-            user.setAge(age );
-            user.setEmail(getEmail());  
-            user.setPassword(getPassword());
+            user.setAge(age );            
             System.out.println("Set user name to keep your account unique"); 
             profile.setUserName(getUserName());       
             user.setProfile(profile);
@@ -87,11 +88,10 @@ public class UserView {
                 System.out.println("Account Created Succesfully");
                 feedView.showNewsFeed(userId); 
             } else {
-                System.out.println("This email Id is alredy exist");
+                logger.info("This email Id is alredy exist");
             }  
-        
         } else {
-            System.out.println("You are not elibile to create a account");
+            logger.info("You are not elibile to create a account");
         }                        
     } 
     
@@ -100,18 +100,12 @@ public class UserView {
      */
     public void showHomePage() {
         int selectedOption;
-        boolean isPageActive = true;
-        StringBuilder statement = new StringBuilder();
-        statement.append("\nEnter ").append(Constants.CREATE_ACCOUNT)
-                 .append(" --> To Create a new account ").append("\nEnter ")
-                 .append(Constants.LOGIN).append(" --> To login ")
-                 .append("\nEnter ").append(Constants.EXIT_HOMEPAGE)
-                 .append(" --> To quit ");
+        boolean isPageActive = false;
+        String homeMenu = createHomeMenu();
        
-        while (isPageActive) {   
-            boolean a = false;                     
-            System.out.println(statement);
-            selectedOption = getInput();      
+        while (!isPageActive) {                    
+            System.out.println(homeMenu);
+            selectedOption = getOption();      
 
             switch (selectedOption) {
             case Constants.CREATE_ACCOUNT:
@@ -123,7 +117,7 @@ public class UserView {
                 break;
 
             case Constants.EXIT_HOMEPAGE:
-                isPageActive = false;
+                isPageActive = true;
                 break;
 
             default:
@@ -145,7 +139,6 @@ public class UserView {
         while(!isValid) {
             System.out.print("\nEnter your Name : ");
             name = scanner.nextLine();
-            System.out.println(name);
             isValid = userController.isValidName(name);
         }
         return name;
@@ -168,7 +161,7 @@ public class UserView {
             if (userController.isValidDateOfBirth(dateOfBirth)) {                
                 isValid= true;
             } else {
-                System.out.println("Invalid date");
+                logger.warn("Invalid date format\n");
             }
         } 
         return LocalDate.parse(dateOfBirth);        
@@ -192,10 +185,10 @@ public class UserView {
                 if (!userController.isEmailExist(email)) {
                     isValid = true;
                 } else {
-                    System.out.println("Email Already exist");
+                    logger.warn("Email Already exist\n");
                 }                
             } else {
-                    System.out.println("Invalid email format");     
+                logger.warn("Invalid email format\n");     
             }  
         }
         return email;
@@ -210,6 +203,10 @@ public class UserView {
     private String getPassword() { 
         boolean isValid = false;
         String password = "";
+        StringBuilder formatMessage = new StringBuilder();
+        formatMessage.append("Invalid Password.")
+                     .append("\npassword must contain (a-ZA-Z0-9)")
+                     .append(" and Any Special Character range must be 8-20)");
          
         while (!isValid) {
             System.out.print("Enter your password (a-ZA-Z0-9 and Special Character) : ");
@@ -218,10 +215,7 @@ public class UserView {
             if (userController.isValidPassword(password)) {
                 isValid = true;
             } else {
-                System.out.println("Invalid your password must "
-                                         + "contain (a-ZA-Z0-9) "
-                                         + "and Any Special Character "
-                                         + "range must be 8-20");    
+                System.out.println(formatMessage);    
             }            
         }  
         return password;        
@@ -245,10 +239,10 @@ public class UserView {
                 if (!userController.isUserNameExist(userName)) {
                     isValid = true;    
                 } else {
-                    System.out.println("UserName is already exist Enter a new one");
+                    logger.warn("UserName is already exist Enter a new one\n");
                 }
             } else {
-                System.out.println("Invalid username");                
+                logger.warn("Invalid username\n");                
             } 
         }  
         return userName;        
@@ -259,18 +253,33 @@ public class UserView {
      * 
      * @return input input given by the user
      */
-    private int getInput() {
+    private int getOption() {
         Scanner scanner = new Scanner(System.in);
-        int input;
-        try{
-            input = scanner.nextInt();
-        } catch(InputMismatchException e) {
-            System.out.println("Enter Only Number not String ");
-            return 0;
-        }
-        return input; 
-    }  
-}
-    
-    
+        int option = 0;
 
+        try {
+            option = scanner.nextInt();
+        } catch(InputMismatchException e) {
+            logger.error("Enter Only Number not String\n");
+            return option;
+        }
+        return option; 
+    }  
+    
+    /**
+     * Creates the home menu to show the options 
+     *
+     * @return homeMenu - Menu shows the option available in home
+     */
+    private String createHomeMenu() {
+        StringBuilder homeMenu = new StringBuilder();
+
+        homeMenu.append("\nEnter ").append(Constants.CREATE_ACCOUNT)
+                .append(" --> To Create a new account ")
+                .append("\nEnter ").append(Constants.LOGIN)
+                .append(" --> To login ")
+                .append("\nEnter ").append(Constants.EXIT_HOMEPAGE)
+                .append(" --> To quit ");
+        return homeMenu.toString();
+    }
+}

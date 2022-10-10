@@ -16,11 +16,7 @@ import com.ideas2it.model.User;
 public class UserController {
     private UserService userService;
     private ValidationUtil validationUtil;
-    
-    /**
-     * Creates a new object for the UserController and initialize the feilds
-     * of that class
-     */
+
     public UserController() {
         this.userService = new UserService();
         this.validationUtil = new ValidationUtil();
@@ -153,7 +149,7 @@ public class UserController {
     }
     
     /** 
-     * Check the given dateOfBith matches to the given format 
+     * Checks the given dateOfBith matches to the given format 
      * 
      * @param  dateOfBirth dateOfBirth need to be validated 
      * @return boolean     true if the given data matches the format else false
@@ -227,5 +223,4 @@ public class UserController {
     public String getUserIdByUserName(String userName) {
         return userService.getUserIdByUserName(userName);
     }
-  
 }

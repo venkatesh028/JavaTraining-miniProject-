@@ -2,35 +2,35 @@ package com.ideas2it.view;
 
 import java.util.Scanner;
 import java.util.InputMismatchException;
+
 import com.ideas2it.controller.PostController;
 import com.ideas2it.controller.ProfileController; 
 import com.ideas2it.constant.Constants;
+import com.ideas2it.logger.CustomLogger;
 
 /**
  * Shows the news feed page to user and based on is action shows further pages
  *
  * @version 1.0 22-SEP-2022
- * @author Venkatesh TM
+ * @author  Venkatesh TM
  */ 
 public class PostView {
     private PostController postController;
     private Scanner scanner;
     private ProfileController profileController;
+    private CustomLogger logger;
 
-    /**
-     * Creates a new object for the PostView and initialize the feilds
-     * of that class
-     */ 
     public PostView() {
         this.postController = new PostController();
         this.profileController = new ProfileController();
         this.scanner = new Scanner(System.in);
+        this.logger = new CustomLogger(PostView.class);
     }
     
     /** 
      * Add the post by getting the quotes form the user
      * 
-     * @param userName userName of the person who is uploading the post
+     * @param userName - userName of the person who is uploading the post
      */ 
     public void addPost(String userId) {
         String quotes;
@@ -38,8 +38,9 @@ public class PostView {
         System.out.print("Enter your quotes : ");
         quotes = scanner.nextLine();
         userName = profileController.getUserName(userId);
+
         if (postController.addPost(userName, quotes)) {
-            System.out.println("Post added Successfully");
+            logger.info("Post added Successfully");
         }        
     }
     
@@ -65,7 +66,7 @@ public class PostView {
         String comment = scanner.nextLine();
 
         if (postController.addComment(postId, comment)) {
-            System.out.println("Comment added successfully ");
+            logger.info("Comment added successfully ");
         }      
     }
     
@@ -82,7 +83,7 @@ public class PostView {
         boolean postFeedRunning = true;
         statement.append("\nEnter ").append(Constants.ADDPOST)
                  .append(" --> To add post ").append("\nEnter ")
-                 .append(Constants.LIKE).append(" --> To add like ")
+                 .append(Constants.LIKE).append(" --> To add like ")               
                  .append("\nEnter ").append(Constants.COMMENT)
                  .append(" --> To add comment ")
                  .append("\nEnter ").append(Constants.EXIT_POSTPAGE)
@@ -93,7 +94,6 @@ public class PostView {
                 System.out.println("Post is not available");    
             } else {
                 System.out.println(postController.getUserPost());
-                    
             } 
             
             System.out.println(statement);
@@ -117,8 +117,7 @@ public class PostView {
                 break;
 
             default:
-                System.out.println("You entered wrong option");
-
+                logger.warn("You entered wrong option");
             }    
         }
     }
@@ -130,12 +129,13 @@ public class PostView {
      */
     private int getInput() {
         Scanner scanner = new Scanner(System.in);
-        int input;
-        try{
+        int input = 0;
+
+        try {
             input = scanner.nextInt();    
         } catch(InputMismatchException e) {
-            System.out.println("Enter Only Number not String ");
-            return 0;
+            logger.error("Enter Only Number not String\n");
+            return input;
         }
         return input;
     }

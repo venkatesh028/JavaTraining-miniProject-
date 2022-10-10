@@ -20,7 +20,6 @@ import com.ideas2it.model.Profile;
  * @author Venkatesh TM
  */
 public class UserService {
-
     private UserDao userDao;
 
     public UserService() {
@@ -91,7 +90,6 @@ public class UserService {
         users = userDao.getUsers();
         loginCredentials = userDao.getLoginCredentials();
         user = users.get(loginCredentials.get(email));
-
         return user.getPassword().equals(password);
     }
     
@@ -233,6 +231,5 @@ public class UserService {
             }
         }
         return userId;        
-    }
-  
+    } 
 }
